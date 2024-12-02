@@ -4,6 +4,7 @@ import pickle
 import random
 from scipy.stats import pearsonr
 import os
+from tqdm import tqdm
 
 
 if not os.path.exists('processing'):
@@ -66,7 +67,7 @@ def create_dictionary(names: np.ndarray, y: np.ndarray):
             newdict[names[i][j]] = dictionary[names[i][j]][0]/dictionary[names[i][j]][1]
     return newdict
 
-def preprocess_data(train_data: np.ndarray, r_threshold=0.25, plots_path='processing/plots', no_plot=True):
+def preprocess_data(train_data: np.ndarray, r2_threshold=0.25, plots_path='preprocess/processing/plots', output_path='preprocess/processing', dataset_name='processed_data', no_plot=True):
     print("start preprocessing")
     ground_truth = train_data[:, 5] # isolate ground truth out of training data
     data = np.delete(train_data, [0, 3, 5, 39, 40], axis=1) # remove unnecessary columns
@@ -88,11 +89,11 @@ def preprocess_data(train_data: np.ndarray, r_threshold=0.25, plots_path='proces
     
     print("calculating r values")
     r_values = np.zeros((y, y)) # calculate r value for each column
-    for i in range(10, y):
-        for j in range(10, y):
-            r_values[i][j] = pearsonr(data[:, i], data[:, j])[0]**2
+    for i in tqdm(range(10, y)):
+        for j in tqdm(range(10, y), leave=False):
+            r_values[i][j] = float(pearsonr(data[:, i].astype(float), data[:, j].astype(float))[0])**2
     
-    r_masks = np.logical_and(r_values > r_threshold, r_values < 0.99)
+    r_masks = np.logical_and(r_values > r2_threshold, r_values < 0.99)
     related_pairs = []
     for i in range(10, y):
         for j in range(10, y):
@@ -109,7 +110,7 @@ def preprocess_data(train_data: np.ndarray, r_threshold=0.25, plots_path='proces
             os.makedirs(plots_path)
 
         blue = np.copy(ground_truth)
-        blue.astype(bool)
+        blue = blue.astype(bool)
         green = np.logical_not(blue)
         for i in range(pairs):
             px, py = related_pairs[i]
@@ -119,7 +120,7 @@ def preprocess_data(train_data: np.ndarray, r_threshold=0.25, plots_path='proces
             plt.xlabel(f'column {px}')
             plt.ylabel(f'column {py}')
             plt.legend(loc='best')
-            plt.savefig(f'processing/plots/{r_values[px][py]:.2f}r_{px}_to_{py}.png')
+            plt.savefig(f'{plots_path}/{r_values[px][py]:.2f}r_{px}_to_{py}.png')
             plt.close()
     
     dsu = DisjointSetUnion(y)
@@ -152,22 +153,22 @@ def preprocess_data(train_data: np.ndarray, r_threshold=0.25, plots_path='proces
     for i in range(num_pca):
         processed_data = np.hstack((processed_data, transformed_data[i]))
     
-    with open('processing/ttoi', 'wb') as f:
+    with open(f'{output_path}/ttoi', 'wb') as f:
         pickle.dump(ttoi, f)
     
-    with open('processing/ptoi', 'wb') as f:
+    with open(f'{output_path}/ptoi', 'wb') as f:
         pickle.dump(ptoi, f)
     
-    with open('processing/pcacolumns', 'wb') as f:
+    with open(f'{output_path}/pcacolumns', 'wb') as f:
         pickle.dump(pcacolumns, f)
     
-    with open('processing/pca_processors', 'wb') as f:
+    with open(f'{output_path}/pca_processors', 'wb') as f:
         pickle.dump(pca_processors, f)
     
-    with open('processing/ground_truth', 'wb') as f:
+    with open(f'{output_path}/ground_truth', 'wb') as f:
         pickle.dump(ground_truth, f)
     
-    with open('processing/processed_data', 'wb') as f:
+    with open(f'{output_path}/{dataset_name}', 'wb') as f:
         pickle.dump(processed_data, f)
     
     return processed_data
