@@ -166,9 +166,9 @@ def preprocess_data(train_data: np.ndarray, r2_threshold=0.25, plots_path='prepr
         pickle.dump(pca_processors, f)
     
     with open(f'{output_path}/ground_truth', 'wb') as f:
-        pickle.dump(ground_truth, f)
+        pickle.dump(ground_truth.astype(bool), f)
     
     with open(f'{output_path}/{dataset_name}', 'wb') as f:
-        pickle.dump(processed_data, f)
+        pickle.dump(processed_data.astype(np.float32), f)
     
     return processed_data
