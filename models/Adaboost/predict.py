@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
 import csv
@@ -15,8 +16,8 @@ def load_data():
     return train_data, ground_truth.astype(int), test_data
 
 def run_adaboost(x_train, y_train):
-
-    model = AdaBoostClassifier(n_estimators=2600, algorithm="SAMME")
+    dtree = DecisionTreeClassifier(max_depth=5)
+    model = AdaBoostClassifier(n_estimators=45, algorithm="SAMME", estimator=dtree)
     model.fit(x_train, y_train)
     
     with open('./adaboost_model.pkl', 'wb') as f:
@@ -47,4 +48,4 @@ def train():
     test(x_test, model)
     
 if __name__ == '__main__':
-    train() # so far best: 9500
+    train()
