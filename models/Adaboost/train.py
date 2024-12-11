@@ -42,25 +42,25 @@ def record(E_in, E_val, estimator_cnt):
 
 def train():
     x, y = load_data()
-    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.1, random_state=42)
+    # x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
     params = {
-        "estimator__max_depth": [3],
-        "estimator__min_samples_split": [0.01, 0.005, 0.05],
-        "estimator__min_samples_leaf": [2, 5, 10],
+        "estimator__max_depth": [2, 3],
+        "estimator__min_samples_split": [2],
+        "estimator__min_samples_leaf": [10],
         'estimator__max_features': [None],
-        'n_estimators': [30, 40, 50]
+        'n_estimators': [50, 75, 165]
     }
     dt = DecisionTreeClassifier(random_state=42)
     ada = AdaBoostClassifier(estimator=dt, algorithm="SAMME")
-    grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=5, n_jobs=-1, verbose=2, scoring='accuracy')
-    grid_search.fit(x_train, y_train)
+    grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=10, n_jobs=-1, verbose=2, scoring='accuracy')
+    grid_search.fit(x, y)
     best_params = grid_search.best_params_
     print(f"Best Hyperparameters: {best_params}")
 
     best_ada = grid_search.best_estimator_
-    y_pred = best_ada.predict(x_val)
-    accuracy = accuracy_score(y_val, y_pred)
-    print(f"Validation Accuracy with Best Params: {accuracy}")
+    # y_pred = best_ada.predict(x_val)
+    # accuracy = accuracy_score(y_val, y_pred)
+    # print(f"Validation Accuracy with Best Params: {accuracy}")
     
 if __name__ == '__main__':
     train()
