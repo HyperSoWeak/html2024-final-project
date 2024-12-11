@@ -1,11 +1,12 @@
 import numpy as np
 import pickle
 import os
+import pandas as pd
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
 def load_model(k):
-    with open(f'kmeans_model_k{k}.pkl', 'rb') as f:
+    with open(f'kmeans_models/kmeans_model_k{k}.pkl', 'rb') as f:
         kmeans_model = pickle.load(f)
     return kmeans_model
 
@@ -17,12 +18,15 @@ def predict_test_data(test_data, model):
 with open('../../preprocess/processing/test1', 'rb') as f:
     test_data = pickle.load(f)
 
-test_k = 1228
+test_k = 600
 model = load_model(test_k)
 model.cluster_centers_ = model.cluster_centers_.astype(np.float32)
 
 predicted_y = (predict_test_data(test_data, model) > 0.5)
 print(predicted_y)
 
-with open('prediction_1', 'wb') as f:
+with open(f'prediction_kmeans_k{test_k}', 'wb') as f:
     pickle.dump(predicted_y, f)
+
+df = pd.DataFrame(predicted_y)
+df.to_csv(f'prediction_kmeans_k{test_k}.csv')
