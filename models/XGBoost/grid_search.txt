@@ -1,0 +1,2 @@
+0.6124509396924064, {'eta': 0.5, 'eval_metric': 'auc', 'max_depth': 2, 'n_estimators': 16}
+0.613353628942224, {'eta': 0.25, 'eval_metric': 'auc', 'max_depth': 3, 'n_estimators': 17}
