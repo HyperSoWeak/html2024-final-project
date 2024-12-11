@@ -32,7 +32,6 @@ decoder = Dense(int(input_dim / 2), activation='sigmoid')(encoder)
 output_layer = Dense(input_dim, activation='sigmoid')(decoder)
 
 autoencoder = Model(input_layer, output_layer)
-autoencoder.compile(optimizer='adam', loss='mean_squared_error')
 
 # input_layer = Input(shape=(input_dim,))
 # encoder = Dense(128, activation='relu')(input_layer)
