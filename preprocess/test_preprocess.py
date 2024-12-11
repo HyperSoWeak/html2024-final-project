@@ -2,19 +2,20 @@ import numpy as np
 from sklearn.decomposition import PCA
 import pickle
 import random
+import pandas as pd
 
-with open('preprocess/processing/ttoi', 'rb') as f:
+with open('./processing/ttoi', 'rb') as f:
     ttoi = pickle.load(f)
 stored_teams = list(ttoi.keys())
 
-with open('preprocess/processing/ptoi', 'rb') as f:
+with open('./processing/ptoi', 'rb') as f:
     ptoi = pickle.load(f)
 stored_pitchers = list(ptoi.keys())
 
-with open('preprocess/processing/pcacolumns', 'rb') as f:
+with open('./processing/pcacolumns', 'rb') as f:
     pcacolumns = pickle.load(f)
 
-with open('preprocess/processing/pca_processors', 'rb') as f:
+with open('./processing/pca_processors', 'rb') as f:
     pca_processors = pickle.load(f)
 
 def convert_team(team_name: str):
@@ -61,4 +62,11 @@ def preprocess_data(test_data: np.ndarray, stage=1):
     
     for i in range(num_pca):
         processed_data = np.hstack((processed_data, transformed_data[i])) # concatenate transformed columns to data
+        with open(f'./processing/test2_recover', 'wb') as f:
+            pickle.dump(processed_data.astype(np.float32), f)
     return processed_data.astype(np.float32)
+
+test = np.array(pd.read_csv('../data/2024_test_data_recovered.csv', sep=',', header=None))[1:]
+test[:, 6:37] = test[:, 6:37].astype(float)
+test[:, 39:] = test[:, 39:].astype(float)
+preprocess_data(test, stage=2)

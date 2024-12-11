@@ -11,7 +11,7 @@ def load_data():
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
-    with open('../../preprocess/processing/recover_test1.pkl', 'rb') as f:
+    with open('../../preprocess/processing/test2_recover', 'rb') as f:
         test_data = pickle.load(f)
     return train_data, ground_truth.astype(int), test_data
 
@@ -29,7 +29,7 @@ def run_adaboost(x_train, y_train):
 def test(x_test, model):
     res = model.predict(x_test)
 
-    with open("./Results/stage_1_predict.csv", "w", newline='') as f:
+    with open("./Results/stage_2_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):
