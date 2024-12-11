@@ -48,7 +48,7 @@ def load_data():
         ]
     )
 
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=1126)
 
     # Preprocess the data
     X_train_preprocessed = preprocessor.fit_transform(X_train)
