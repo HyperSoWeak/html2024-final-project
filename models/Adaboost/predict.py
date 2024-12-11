@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
 from sklearn.ensemble import AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
 import csv
@@ -10,13 +11,13 @@ def load_data():
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
-    with open('../../preprocess/processing/test1', 'rb') as f:
+    with open('../../preprocess/processing/test2', 'rb') as f:
         test_data = pickle.load(f)
     return train_data, ground_truth.astype(int), test_data
 
 def run_adaboost(x_train, y_train):
-
-    model = AdaBoostClassifier(n_estimators=2600, algorithm="SAMME")
+    dtree = DecisionTreeClassifier(max_depth=2, min_samples_leaf=10, random_state=42)
+    model = AdaBoostClassifier(n_estimators=150, algorithm="SAMME", estimator=dtree)
     model.fit(x_train, y_train)
     
     with open('./adaboost_model.pkl', 'wb') as f:
@@ -27,7 +28,7 @@ def run_adaboost(x_train, y_train):
 def test(x_test, model):
     res = model.predict(x_test)
 
-    with open("./Results/stage_1_predict.csv", "w", newline='') as f:
+    with open("./Results/stage_2_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):
@@ -47,4 +48,4 @@ def train():
     test(x_test, model)
     
 if __name__ == '__main__':
-    train() # so far best: 9500
+    train()
