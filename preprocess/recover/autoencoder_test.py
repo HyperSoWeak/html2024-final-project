@@ -7,8 +7,8 @@ from tensorflow.keras.models import Model  # type: ignore
 from sklearn.impute import SimpleImputer
 
 train_data_path = os.path.join(os.path.dirname(__file__), '../../data/train_data.csv')
-test_data_path = os.path.join(os.path.dirname(__file__), '../../data/same_season_test_data.csv')
-save_data_path = os.path.join(os.path.dirname(__file__), '../../data/same_season_test_data_recovered.csv')
+test_data_path = os.path.join(os.path.dirname(__file__), '../../data/2024_test_data.csv')
+save_data_path = os.path.join(os.path.dirname(__file__), '../../data/2024_test_data_recovered.csv')
 
 df = pd.read_csv(test_data_path)
 
