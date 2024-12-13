@@ -6,3 +6,17 @@ E_val: 0.55913911309095, E_in: 0.6290774374265835
 
 E_val: 0.5604037107278848, E_in: 0.6774193548387096
 {'alpha': 0, 'eta': 0.3, 'gamma': 1, 'lambda': 100, 'max_depth': 3, 'min_child_weight': 30, 'n_estimators': 50}
+
+E_val: 0.5641081495203137, E_in: 0.6365772115297732
+{'alpha': 0, 'eta': 0.1, 'gamma': 3, 'lambda': 100, 'max_depth': 3, 'min_child_weight': 30, 'n_estimators': 60}
+
+E_val: 0.5629325792956543, E_in: 0.636667570253908
+{'alpha': 0, 'eta': 0.05, 'gamma': 3, 'lambda': 50, 'max_depth': 5, 'min_child_weight': 40, 'n_estimators': 27}
+
+E_val: 0.5602236956667337, E_in: 0.6263666757025391
+{'alpha': 1, 'booster': 'dart', 'eta': 0.1, 'gamma': 3, 'lambda': 10, 'max_depth': 3, 'min_child_weight': 10, 'n_estimators': 20}       
+
+
+// linear
+E_val: 0.5613080332129421, E_in: 0.565735971808078
+{'alpha': 0, 'lambda': 1, 'n_estimators': 20}

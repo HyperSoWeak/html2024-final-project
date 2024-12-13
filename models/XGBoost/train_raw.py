@@ -36,8 +36,8 @@ def load_data():
         data[col] = data[col].astype("category")
     for col in header:
         if col not in cat:
-            data[col] = data[col].astype(float)
-    test = np.array(pd.read_csv('../../data/2024_test_data.csv', sep=',', header=None))[1:]
+            data[col] = data[col].astype(np.float32)
+    test = np.array(pd.read_csv('../../data/same_season_test_data.csv', sep=',', header=None))[1:]
     test_x, test_y = test.shape
     for i in range(test_x):
         if str(test[i][3]) == 'True':
@@ -53,23 +53,23 @@ def load_data():
         test_data[col] = test_data[col].astype("category")
     for col in header:
         if col not in cat:
-            test_data[col] = test_data[col].astype(float)
+            test_data[col] = test_data[col].astype(np.float32)
 
-    return data, np.array(ground_truth).astype(float), test_data
+    return data, np.array(ground_truth).astype(np.float32), test_data
 
 def train():
     x, y, test_x = load_data()
-    xgb_model = xgb.XGBClassifier(eval_metric='auc', tree_method='hist', enable_categorical=True, max_cat_to_onehot=7, missing=float('nan'))
+    xgb_model = xgb.XGBClassifier(eval_metric='auc', tree_method='hist', enable_categorical=True, max_cat_to_onehot=7, missing=np.nan)
     clf = GridSearchCV(
         xgb_model,
         {
             "max_depth": [3], 
-            "n_estimators": [50],
-            'eta': [0.3],
-            'gamma': [1],
-            'lambda': [100],
-            'alpha': [0],
-            'min_child_weight': [30],
+            "n_estimators": [20],
+            'eta': [0.1],
+            'gamma': [3],
+            'lambda': [10],
+            'alpha': [1],
+            'min_child_weight': [10]
         },
         verbose=2,
         n_jobs=-1,
@@ -80,8 +80,8 @@ def train():
     print(clf.best_params_)
     best = clf.best_estimator_
     print(f'E_in: {best.score(x, y)}')
-    res = best.predict(test_x)
-    with open("./stage_2_predict.csv", "w", newline='') as f:
+    res = best.predict(test_x, iteration_range=(0, 20))
+    with open("./stage_1_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):
