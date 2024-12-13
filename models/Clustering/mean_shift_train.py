@@ -44,7 +44,7 @@ def main():
     e_in, binary_labels = calculate_e_in(X, y, mean_shift_model)
     print(f"E_in (in-sample error): {e_in}")
     
-    save_model(mean_shift_model, binary_labels, "mean_shift_model_n.pkl")
+    save_model(mean_shift_model, binary_labels, "mean_shift_model_recover.pkl")
 
 if __name__ == '__main__':
     main()

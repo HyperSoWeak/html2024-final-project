@@ -5,13 +5,14 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
-from tensorflow.keras.models import Sequential # type: ignore
-from tensorflow.keras.layers import Dense, Dropout, BatchNormalization # type: ignore
-from tensorflow.keras.optimizers import Adam # type: ignore
-from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau # type: ignore
+from tensorflow.keras.models import Sequential  # type: ignore
+from tensorflow.keras.layers import Dense, Dropout, BatchNormalization  # type: ignore
+from tensorflow.keras.optimizers import Adam  # type: ignore
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau  # type: ignore
 
 train_data_path = os.path.join(os.path.dirname(__file__), '../../data/train_data_recovered.csv')
-test_data_path = os.path.join(os.path.dirname(__file__), '../../data/same_season_test_data_recovered.csv')
+test_data_path = os.path.join(os.path.dirname(__file__), '../../data/2024_test_data_recovered.csv')
+
 
 def load_data():
     df = pd.read_csv(train_data_path)
@@ -24,7 +25,8 @@ def load_data():
 
     X_test = df_test.drop(columns=['id'])
 
-    categorical_cols = ['home_team_abbr', 'away_team_abbr', 'season', 'home_team_season', 'away_team_season', 'home_pitcher', 'away_pitcher']
+    categorical_cols = ['home_team_abbr', 'away_team_abbr', 'season',
+                        'home_team_season', 'away_team_season', 'home_pitcher', 'away_pitcher']
     numerical_cols = [col for col in X.columns if col not in categorical_cols]
 
     # Numerical transformer with StandardScaler and Imputer
@@ -46,7 +48,7 @@ def load_data():
         ]
     )
 
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=1126)
 
     # Preprocess the data
     X_train_preprocessed = preprocessor.fit_transform(X_train)
@@ -55,24 +57,25 @@ def load_data():
 
     return X_train_preprocessed, X_val_preprocessed, X_test_preprocessed, y_train, y_val
 
+
 def create_dnn_model(input_dim):
     model = Sequential()
 
     # Input Layer
-    model.add(Dense(128, input_dim=input_dim, activation='relu'))
-    model.add(Dropout(0.3))  # Increased dropout to reduce overfitting
+    model.add(Dense(128, input_dim=input_dim, activation='tanh'))
+    model.add(Dropout(0.4))  # Increased dropout to reduce overfitting
     model.add(BatchNormalization())
 
     # Hidden Layers
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(64, activation='tanh'))
+    model.add(Dropout(0.4))
+    model.add(BatchNormalization())
+
+    model.add(Dense(32, activation='tanh'))
     model.add(Dropout(0.3))
     model.add(BatchNormalization())
 
-    model.add(Dense(32, activation='relu'))
-    model.add(Dropout(0.3))
-    model.add(BatchNormalization())
-
-    model.add(Dense(16, activation='relu'))
+    model.add(Dense(16, activation='tanh'))
     model.add(Dropout(0.3))
     model.add(BatchNormalization())
 
@@ -83,6 +86,7 @@ def create_dnn_model(input_dim):
     model.compile(optimizer=Adam(learning_rate=0.001), loss='binary_crossentropy', metrics=['accuracy'])
 
     return model
+
 
 if __name__ == '__main__':
     X_train, X_val, X_test, y_train, y_val = load_data()
