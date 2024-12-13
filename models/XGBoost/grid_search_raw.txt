@@ -1,0 +1,8 @@
+E_val: 0.5605843518896101, E_in: 0.6190476190476191
+{'alpha': 1, 'eta': 0.3, 'gamma': 1, 'lambda': 300, 'max_depth': 3, 'min_child_weight': 30, 'n_estimators': 20}
+
+E_val: 0.55913911309095, E_in: 0.6290774374265835
+{'alpha': 0, 'eta': 0.3, 'gamma': 10, 'lambda': 100, 'max_depth': 2, 'min_child_weight': 10, 'n_estimators': 50}
+
+E_val: 0.5604037107278848, E_in: 0.6774193548387096
+{'alpha': 0, 'eta': 0.3, 'gamma': 1, 'lambda': 100, 'max_depth': 3, 'min_child_weight': 30, 'n_estimators': 50}
