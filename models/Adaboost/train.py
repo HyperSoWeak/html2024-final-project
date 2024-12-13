@@ -2,8 +2,9 @@ import pickle
 import numpy as np
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
-from multiprocessing import Pool
 
 def load_data():
     with open('../../preprocess/processing/processed_data', 'rb') as f:
@@ -41,32 +42,25 @@ def record(E_in, E_val, estimator_cnt):
 
 def train():
     x, y = load_data()
-    train_size = len(y)
-    val_size = 300
-    E_in_avg = [0] * 19
-    E_val_avg = [0] * 19
-    fold = 8
-    for k in range(1, fold + 1):
-        x_train = np.concatenate((x[:int(train_size * k / 8) - val_size], x[int(train_size * k / 8):]))
-        y_train = np.concatenate((y[:int(train_size * k / 8) - val_size], y[int(train_size * k / 8):]))
-        x_val = x[int(train_size * k / 8) - val_size:int(train_size * k / 8)]
-        y_val = y[int(train_size * k / 8) - val_size:int(train_size * k / 8)]
-        input = []
-        input.append((x_train, y_train, x_val, y_val, 2, 8, 1))
-        input.append((x_train, y_train, x_val, y_val, 9, 13, 1))
-        input.append((x_train, y_train, x_val, y_val, 14, 16, 1))
-        input.append((x_train, y_train, x_val, y_val, 17, 20, 1))
-        with Pool(4) as p:
-            res = p.starmap(run_adaboost, input)
-        for i in range(4):
-            for j in range(0, len(res[i][0])):
-                E_in_avg[res[i][2][j] - 2] += res[i][0][j]
-            for j in range(0, len(res[i][1])):
-                E_val_avg[res[i][2][j] - 2] += res[i][1][j]
-    for i in range(len(E_in_avg)):
-        E_in_avg[i] /= fold
-        E_val_avg[i] /= fold
-    record(E_in_avg, E_val_avg, range(2, 21, 1))
+    # x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
+    params = {
+        "estimator__max_depth": [2, 3],
+        "estimator__min_samples_split": [2],
+        "estimator__min_samples_leaf": [10],
+        'estimator__max_features': [None],
+        'n_estimators': [50, 75, 165]
+    }
+    dt = DecisionTreeClassifier(random_state=42)
+    ada = AdaBoostClassifier(estimator=dt, algorithm="SAMME")
+    grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=10, n_jobs=-1, verbose=2, scoring='accuracy')
+    grid_search.fit(x, y)
+    best_params = grid_search.best_params_
+    print(f"Best Hyperparameters: {best_params}")
+
+    best_ada = grid_search.best_estimator_
+    # y_pred = best_ada.predict(x_val)
+    # accuracy = accuracy_score(y_val, y_pred)
+    # print(f"Validation Accuracy with Best Params: {accuracy}")
     
 if __name__ == '__main__':
     train()
