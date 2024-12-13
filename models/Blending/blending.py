@@ -4,13 +4,13 @@ import numpy as np
 
 res = [0] * 6185
 model_cnt = 6
-acc = [0.55422, 0.58779, 0.58166, 0.55390, 0.57779, 0.58553]
-name = ["./gaussian_SVM_1.csv", "./blending.csv", "./xgboost.csv", "./lr.csv", "./random-forest-optimized.csv", "./dnn-recovered.csv"]
+acc = [0.55422, 0.58166, 0.57779, 0.58553, 0.52969, 0.55390]
+name = ["./gaussian_SVM_1.csv", "./xgboost.csv", "./random-forest-optimized.csv", "./dnn-recovered.csv", "./mean_shift_predictions.csv", "./lr.csv"]
 
 def w(x):
     return x
 
-for j in range(model_cnt):
+for j in range(model_cnt - 2):
     with open(name[j], "r", newline='') as f1:
         rows = list(csv.reader(f1))
 

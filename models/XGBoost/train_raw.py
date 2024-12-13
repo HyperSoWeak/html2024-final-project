@@ -37,7 +37,7 @@ def load_data():
     for col in header:
         if col not in cat:
             data[col] = data[col].astype(np.float32)
-    test = np.array(pd.read_csv('../../data/same_season_test_data.csv', sep=',', header=None))[1:]
+    test = np.array(pd.read_csv('../../data/2024_test_data.csv', sep=',', header=None))[1:]
     test_x, test_y = test.shape
     for i in range(test_x):
         if str(test[i][3]) == 'True':
@@ -60,16 +60,17 @@ def load_data():
 def train():
     x, y, test_x = load_data()
     xgb_model = xgb.XGBClassifier(eval_metric='auc', tree_method='hist', enable_categorical=True, max_cat_to_onehot=7, missing=np.nan)
+    # 'alpha': 0, 'eta': 0.1, 'gamma': 3, 'lambda': 100, 'max_depth': 3, 'min_child_weight': 30, 'n_estimators': 60
     clf = GridSearchCV(
         xgb_model,
         {
             "max_depth": [3], 
-            "n_estimators": [20],
+            "n_estimators": [60],
             'eta': [0.1],
             'gamma': [3],
-            'lambda': [10],
-            'alpha': [1],
-            'min_child_weight': [10]
+            'lambda': [100],
+            'alpha': [0],
+            'min_child_weight': [30]
         },
         verbose=2,
         n_jobs=-1,
@@ -80,8 +81,8 @@ def train():
     print(clf.best_params_)
     best = clf.best_estimator_
     print(f'E_in: {best.score(x, y)}')
-    res = best.predict(test_x, iteration_range=(0, 20))
-    with open("./stage_1_predict.csv", "w", newline='') as f:
+    res = best.predict(test_x)
+    with open("./stage_2_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):
