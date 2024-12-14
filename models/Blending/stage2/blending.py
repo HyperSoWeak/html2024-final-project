@@ -2,15 +2,15 @@ import csv
 import math
 import numpy as np
 
-res = [0] * 6185
-model_cnt = 6
-acc = [0.55422, 0.58166, 0.57779, 0.58553, 0.52969, 0.55390]
-name = ["./gaussian_SVM_1.csv", "./xgboost.csv", "./random-forest-optimized.csv", "./dnn-recovered.csv", "./mean_shift_predictions.csv", "./lr.csv"]
+res = [0] * 2428
+model_cnt = 4
+acc = [0.58388, 0.57724, 0.57308, 0.55481]
+name = ["./dnn-recovered_stage2.csv", "./xgboost.csv", "./rbf_svm.csv", "./lin_reg.csv"]
 
 def w(x):
     return x
 
-for j in range(model_cnt - 2):
+for j in range(model_cnt):
     with open(name[j], "r", newline='') as f1:
         rows = list(csv.reader(f1))
 
