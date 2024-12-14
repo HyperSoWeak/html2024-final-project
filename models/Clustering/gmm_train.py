@@ -63,7 +63,7 @@ def main():
     best_e_in = float('inf')
     e_in_list = []
     
-    with open("clustering_results.txt", "w") as log_file, open("e_in_values.txt", "w") as e_in_file:
+    with open(f"clustering_results_recover_{start}_{stop}.txt", "w") as log_file, open(f"e_in_values_recover_{start}_{stop}.txt", "w") as e_in_file:
         for k in k_values:
             log_file.write(f"Clustering with k={k}...\n")
             print(f"Clustering with k={k}...")
@@ -79,6 +79,9 @@ def main():
         
         log_file.write(f"Best k: {best_k} with E_in: {best_e_in}\n")
         print(f"Best k: {best_k} with E_in: {best_e_in}\n")
+    
+    with open(f"gmm_e_in_list_recover_{start}_{stop}.pkl", "wb") as f:
+        pickle.dump(e_in_list, f)
     
     plt.figure(figsize=(10, 6))
     plt.plot(k_values, e_in_list, linestyle='-', color='g', label='training loss')

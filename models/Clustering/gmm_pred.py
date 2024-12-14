@@ -15,18 +15,18 @@ def predict_test_data(test_data, model):
     binary_labels = np.array([model.binary_labels[label] for label in cluster_labels], dtype=int)
     return binary_labels
 
-with open('../../preprocess/processing/test1', 'rb') as f:
+with open('../../preprocess/processing/test2_recover', 'rb') as f:
     test_data = pickle.load(f)
 
-test_k = 506
+test_k = 404
 model = load_model(test_k)
 model.means_ = model.means_.astype(np.float32)
 
 predicted_y = (predict_test_data(test_data, model) > 0.5)
 print(predicted_y)
 
-with open(f'prediction_gmm_k{test_k}', 'wb') as f:
+with open(f'prediction_gmm_k{test_k}_recover', 'wb') as f:
     pickle.dump(predicted_y, f)
 
 df = pd.DataFrame(predicted_y)
-df.to_csv(f'prediction_gmm_k{test_k}.csv')
+df.to_csv(f'prediction_gmm_k{test_k}_recover.csv')

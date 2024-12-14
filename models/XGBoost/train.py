@@ -1,14 +1,11 @@
 import numpy as np
 import pickle
-from scipy.stats import uniform, randint
-from sklearn.datasets import load_breast_cancer, load_diabetes, load_wine
-from sklearn.metrics import auc, accuracy_score, confusion_matrix, mean_squared_error
-from sklearn.model_selection import cross_val_score, GridSearchCV, KFold, RandomizedSearchCV, train_test_split
+from sklearn.model_selection import GridSearchCV
 
 import xgboost as xgb
 
 def load_data():
-    with open('../../preprocess/processing/processed_data', 'rb') as f:
+    with open('../../preprocess/processing/recover_processed_data.pkl', 'rb') as f:
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
@@ -16,22 +13,29 @@ def load_data():
 
 def train():
     x, y = load_data()   
-    xgb_model = xgb.XGBClassifier(
-        tree_method="hist"
-    )
+    xgb_model = xgb.XGBClassifier(eval_metric='auc', tree_method='hist')
+    # {'alpha': 0.1, 'eta': 0.25, 'gamma': 3, 'lambda': 600, 'max_depth': 9, 'n_estimators': 50}
     clf = GridSearchCV(
         xgb_model,
-        {"max_depth": [2, 3], 
-         "n_estimators": [16, 17],
-         'eval_metric': ['auc', 'ams@0'],
-         'eta': [0.25, 0.5]
+        {
+            "max_depth": [9], 
+            "n_estimators": [70],
+            'eta': [0.25],
+            'gamma': [3],
+            'lambda': [600],
+            'alpha': [0.1],
+            # 'min_child_weight': [10],
         },
         verbose=2,
         n_jobs=-1,
+        cv=10
     )
     clf.fit(x, y)
-    print(clf.best_score_)
+    print(f'E_val: {clf.best_score_}')
     print(clf.best_params_)
+    best = clf.best_estimator_
+    print(f'E_in: {best.score(x, y)}')
+    
 
 if __name__ == '__main__':
     train()
