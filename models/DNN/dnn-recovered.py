@@ -46,7 +46,7 @@ def load_data():
         ]
     )
 
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=24)
 
     # Preprocess the data
     X_train_preprocessed = preprocessor.fit_transform(X_train)
@@ -59,20 +59,20 @@ def create_dnn_model(input_dim):
     model = Sequential()
 
     # Input Layer
-    model.add(Dense(128, input_dim=input_dim, activation='relu'))
-    model.add(Dropout(0.3))  # Increased dropout to reduce overfitting
+    model.add(Dense(128, input_dim=input_dim, activation='tanh'))
+    model.add(Dropout(0.4))  # Increased dropout to reduce overfitting
     model.add(BatchNormalization())
 
     # Hidden Layers
-    model.add(Dense(64, activation='relu'))
+    model.add(Dense(64, activation='tanh'))
+    model.add(Dropout(0.4))
+    model.add(BatchNormalization())
+
+    model.add(Dense(32, activation='tanh'))
     model.add(Dropout(0.3))
     model.add(BatchNormalization())
 
-    model.add(Dense(32, activation='relu'))
-    model.add(Dropout(0.3))
-    model.add(BatchNormalization())
-
-    model.add(Dense(16, activation='relu'))
+    model.add(Dense(16, activation='tanh'))
     model.add(Dropout(0.3))
     model.add(BatchNormalization())
 
