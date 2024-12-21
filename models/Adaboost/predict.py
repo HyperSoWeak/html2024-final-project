@@ -11,14 +11,14 @@ def load_data():
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
-    with open('../../preprocess/processing/test2_recover', 'rb') as f:
+    with open('../../preprocess/processing/test2', 'rb') as f:
         test_data = pickle.load(f)
     return train_data, ground_truth.astype(int), test_data
 
 def run_adaboost(x_train, y_train):
     # {'estimator__max_depth': 2, 'estimator__max_features': None, 'estimator__min_samples_leaf': 10, 'estimator__min_samples_split': 2, 'n_estimators': 100}
-    dtree = DecisionTreeClassifier(max_depth=2, min_samples_leaf=10, random_state=42)
-    model = AdaBoostClassifier(n_estimators=165, algorithm="SAMME", estimator=dtree)
+    # dtree = DecisionTreeClassifier(max_depth=2, min_samples_leaf=10, random_state=42)
+    model = AdaBoostClassifier(n_estimators=100, algorithm="SAMME")
     model.fit(x_train, y_train)
     
     with open('./adaboost_model.pkl', 'wb') as f:

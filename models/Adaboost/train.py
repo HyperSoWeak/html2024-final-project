@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 
 def load_data():
-    with open('../../preprocess/processing/processed_data', 'rb') as f:
+    with open('../../preprocess/processing/recover_processed_data.pkl', 'rb') as f:
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
@@ -36,31 +36,26 @@ def record(E_in, E_val, estimator_cnt):
     plt.plot(estimator_cnt, E_in, 'b')
     plt.plot(estimator_cnt, E_val, 'r')
     plt.legend(['$Acc_{in}$', '$Acc_{val}$'])
-    plt.xlabel("Number of Weak Models (Decision Tree, d=5)")
+    plt.xlabel("Number of Weak Models (Decision Stumps)")
     plt.ylabel("Accuracy")
     plt.show()
 
 def train():
     x, y = load_data()
-    # x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2, random_state=42)
-    params = {
-        "estimator__max_depth": [2, 3],
-        "estimator__min_samples_split": [2],
-        "estimator__min_samples_leaf": [10],
-        'estimator__max_features': [None],
-        'n_estimators': [50, 75, 165]
-    }
-    dt = DecisionTreeClassifier(random_state=42)
-    ada = AdaBoostClassifier(estimator=dt, algorithm="SAMME")
-    grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=10, n_jobs=-1, verbose=2, scoring='accuracy')
-    grid_search.fit(x, y)
-    best_params = grid_search.best_params_
-    print(f"Best Hyperparameters: {best_params}")
+    ada = AdaBoostClassifier(algorithm="SAMME")
+    E_in = []
+    E_val = []
+    index = list(range(100, 2000, 200))
+    for i in index:
+        params = {
+            'n_estimators': [i]
+        }
+        grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=5, n_jobs=-1, verbose=2, scoring='accuracy')
+        grid_search.fit(x, y)
+        E_val.append(grid_search.best_score_)
+        E_in.append(grid_search.score(x, y))
 
-    best_ada = grid_search.best_estimator_
-    # y_pred = best_ada.predict(x_val)
-    # accuracy = accuracy_score(y_val, y_pred)
-    # print(f"Validation Accuracy with Best Params: {accuracy}")
+    record(E_in, E_val, index)
     
 if __name__ == '__main__':
     train()

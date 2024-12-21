@@ -19,7 +19,7 @@ def load_data():
         else:
             ground_truth[i] = 0
     train = np.delete(train, [0, 1, 2, 3, 4, 5, 6, 7, 39, 40], axis=1)
-    test = np.array(pd.read_csv('../../data/2024_test_data.csv', sep=',', header=None))[1:]
+    test = np.array(pd.read_csv('../../data/same_season_test_data.csv', sep=',', header=None))[1:]
     test = np.delete(test, [0, 1, 2, 3, 4, 5, 37, 38], axis=1)
 
     return train.astype(np.float32), np.array(ground_truth).astype(np.float32), test.astype(np.float32)
@@ -29,7 +29,7 @@ def load_preprocessed_data():
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
-    with open('../../preprocess/processing/test2_recover', 'rb') as f:
+    with open('../../preprocess/processing/recover_test1.pkl', 'rb') as f:
         test_data = pickle.load(f)
     return train_data, ground_truth.astype(int), test_data
 
@@ -55,7 +55,7 @@ def train():
     print(f'E_in: {best.score(x, y)}')
     res_in = best.predict(x)
     res = best.predict(test_x)
-    with open("./stage_2_predict.csv", "w", newline='') as f:
+    with open("./stage_1_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):

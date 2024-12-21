@@ -3,13 +3,13 @@ import math
 import numpy as np
 
 res = [0] * 6185
-model_cnt = 4
+model_cnt = 6
 acc = [0.55422, 0.58166, 0.57779, 0.58650, 0.52969, 0.55390]
 ranking = [3, 5, 4, 6, 1, 2]
 name = ["./gaussian_SVM_1.csv", "./xgboost.csv", "./random-forest-optimized.csv", "./dnn_model_submissions.csv", "./mean_shift_predictions.csv", "./lr.csv"]
 
 def w(x):
-    return 3.85 ** 3.85 ** 3.85 ** x
+    return 1
 
 for j in range(model_cnt):
     with open(name[j], "r", newline='') as f1:

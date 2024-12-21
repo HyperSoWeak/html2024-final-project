@@ -8,7 +8,7 @@ acc = [0.58388, 0.57724, 0.57308, 0.55481]
 name = ["./dnn-recovered_stage2.csv", "./xgboost.csv", "./rbf_svm.csv", "./lin_reg.csv"]
 
 def w(x):
-    return 3.65 ** 3.65 ** 3.65 ** x
+    return 1
 
 for j in range(model_cnt):
     with open(name[j], "r", newline='') as f1:

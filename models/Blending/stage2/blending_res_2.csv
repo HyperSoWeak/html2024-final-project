@@ -82,7 +82,7 @@ id,home_team_win
 80,True
 81,True
 82,False
-83,True
+83,False
 84,False
 85,True
 86,False
@@ -126,7 +126,7 @@ id,home_team_win
 124,False
 125,False
 126,True
-127,True
+127,False
 128,True
 129,False
 130,False
@@ -139,7 +139,7 @@ id,home_team_win
 137,False
 138,True
 139,True
-140,True
+140,False
 141,True
 142,True
 143,True
@@ -224,7 +224,7 @@ id,home_team_win
 222,True
 223,False
 224,True
-225,True
+225,False
 226,True
 227,True
 228,True
@@ -317,7 +317,7 @@ id,home_team_win
 315,True
 316,True
 317,True
-318,True
+318,False
 319,False
 320,True
 321,True
@@ -379,7 +379,7 @@ id,home_team_win
 377,True
 378,True
 379,True
-380,True
+380,False
 381,False
 382,True
 383,True
@@ -516,7 +516,7 @@ id,home_team_win
 514,False
 515,True
 516,False
-517,True
+517,False
 518,False
 519,True
 520,False
@@ -706,8 +706,8 @@ id,home_team_win
 704,False
 705,False
 706,True
-707,True
-708,True
+707,False
+708,False
 709,True
 710,True
 711,True
@@ -750,7 +750,7 @@ id,home_team_win
 748,True
 749,False
 750,True
-751,True
+751,False
 752,True
 753,False
 754,True
@@ -817,7 +817,7 @@ id,home_team_win
 815,False
 816,True
 817,True
-818,True
+818,False
 819,False
 820,True
 821,True
@@ -991,9 +991,9 @@ id,home_team_win
 989,False
 990,False
 991,True
-992,True
+992,False
 993,True
-994,True
+994,False
 995,True
 996,True
 997,False
@@ -1067,7 +1067,7 @@ id,home_team_win
 1065,True
 1066,False
 1067,True
-1068,True
+1068,False
 1069,False
 1070,False
 1071,True
@@ -1231,7 +1231,7 @@ id,home_team_win
 1229,True
 1230,True
 1231,True
-1232,True
+1232,False
 1233,True
 1234,False
 1235,True
@@ -1246,7 +1246,7 @@ id,home_team_win
 1244,False
 1245,False
 1246,True
-1247,True
+1247,False
 1248,True
 1249,True
 1250,True
@@ -1274,7 +1274,7 @@ id,home_team_win
 1272,True
 1273,True
 1274,True
-1275,True
+1275,False
 1276,True
 1277,False
 1278,True
@@ -1349,7 +1349,7 @@ id,home_team_win
 1347,True
 1348,False
 1349,True
-1350,True
+1350,False
 1351,True
 1352,True
 1353,False
@@ -1368,7 +1368,7 @@ id,home_team_win
 1366,True
 1367,True
 1368,False
-1369,True
+1369,False
 1370,True
 1371,False
 1372,True
@@ -1410,7 +1410,7 @@ id,home_team_win
 1408,True
 1409,True
 1410,True
-1411,True
+1411,False
 1412,False
 1413,True
 1414,True
@@ -1836,7 +1836,7 @@ id,home_team_win
 1834,True
 1835,True
 1836,True
-1837,True
+1837,False
 1838,False
 1839,False
 1840,True
@@ -1848,7 +1848,7 @@ id,home_team_win
 1846,True
 1847,True
 1848,False
-1849,True
+1849,False
 1850,False
 1851,True
 1852,False
@@ -1863,7 +1863,7 @@ id,home_team_win
 1861,False
 1862,True
 1863,True
-1864,True
+1864,False
 1865,False
 1866,True
 1867,True
@@ -2077,10 +2077,10 @@ id,home_team_win
 2075,True
 2076,True
 2077,False
-2078,True
+2078,False
 2079,False
 2080,False
-2081,True
+2081,False
 2082,True
 2083,False
 2084,True
@@ -2100,7 +2100,7 @@ id,home_team_win
 2098,False
 2099,True
 2100,False
-2101,True
+2101,False
 2102,False
 2103,False
 2104,True
@@ -2126,7 +2126,7 @@ id,home_team_win
 2124,True
 2125,True
 2126,True
-2127,True
+2127,False
 2128,False
 2129,True
 2130,True
@@ -2134,7 +2134,7 @@ id,home_team_win
 2132,True
 2133,False
 2134,False
-2135,True
+2135,False
 2136,True
 2137,True
 2138,True
@@ -2216,7 +2216,7 @@ id,home_team_win
 2214,True
 2215,True
 2216,True
-2217,True
+2217,False
 2218,True
 2219,True
 2220,True
@@ -2357,7 +2357,7 @@ id,home_team_win
 2355,True
 2356,True
 2357,False
-2358,True
+2358,False
 2359,False
 2360,False
 2361,False
