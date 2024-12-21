@@ -1,36 +1,60 @@
-\documentclass{article}
-\usepackage[a4paper, total={7in, 10in}]{geometry}
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=2cm, left=1.5cm, right=1.5cm]{geometry}
 \usepackage{amsmath, amssymb, amsthm}
-\usepackage{bm}
+\usepackage{fancyhdr}
+\usepackage{mdframed}
+\usepackage{enumerate}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{fmtcount}
-\usepackage{enumitem}
-\usepackage{tabularray}
-\usepackage{blindtext}
-\usepackage{stmaryrd}
-\usepackage{fancyhdr}
-\usepackage{xeCJK}
-    \setCJKmainfont[AutoFakeBold=true, AutoFakeSlant=true]{BiauKaiTC}
-% \usepackage{lmodern} % Ensure required font shapes are available
-
-\author{B12902119 胡祐誠 B12902123 常洧丞 B12902037 張聲元 B11902139 洪佑全}
-\title{ML Final Project - How To Make Lasagna}
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{HTML Fall 2024}
+\fancyhead[L]{113-1 Machine Learning}
 \fancyhead[R]{Final Project}
-% \fancyfoot[C]{\thepage}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{15pt}
+
+\usepackage{silence}
+\WarningFilter{latexfont}{Font shape}
+\WarningFilter{latexfont}{Some font shapes were not available}
+
+\usepackage{xeCJK}
+\setCJKmainfont[AutoFakeBold=true, AutoFakeSlant=true]{bkai00mp.ttf}
+\setCJKmonofont[AutoFakeBold=true, AutoFakeSlant=true]{bkai00mp.ttf}
+\setCJKsansfont[AutoFakeBold=true, AutoFakeSlant=true]{bkai00mp.ttf}
+
+% remove all figures for faster compilation
+\usepackage[allfiguresdraft]{draftfigure}
+
+\setlength\parindent{0pt}
+\linespread{1.25}
 
 \begin{document}
+\begin{center}
+  {\LARGE \bf HTML 2024 Final Project}\\[8pt]
+  \textbf{Team:} How To Make Lasagna\\
+  B12902119 胡祐誠 B12902123 常洧丞 B12902037 張聲元 B11902139 洪佑全
+\end{center}
 
-\maketitle
 
-\blindtext[1]
+\section{Introduction}
 
-\pagebreak
+\section{Preprocessing}
 
-\blindtext[1]
+\section{Model}
+
+\subsection{Support Vector Machine}
+
+\subsection{Random Forest}
+
+\subsection{Neural Network}
+
+\subsection{XGBoost}
+
+\section{Result}
+
+\section{Discussion}
+
+\section{Reference}
 
 \end{document}
