@@ -172,14 +172,14 @@ range & {[}2,10{]} & \{None, sqrt\} & {[}1, 100{]} & {[}2, 100{]} & \multicolumn
 \caption{Hyperparameters for AdaBoost with Decision Trees }
 \label{tab:my-table}
 \end{table}
-Each of them means
-\begin{enumerate}
-    \item max\_depth: The maximum depth of the decision trees.
-    \item max\_features: The number of features to consider when looking for the best split. None means taking all $n$ features and sqrt means taking only $\sqrt{n}$ features. 
-    \item min\_samples\_leaf: The minimum number of samples required to be at a leaf node.
-    \item min\_samples\_split: The minimum number of samples required to split an internal node.
-    \item n\_estimators: The number of decision trees. 
-\end{enumerate}
+% Each of them means
+% \begin{enumerate}
+%     \item max\_depth: The maximum depth of the decision trees.
+%     \item max\_features: The number of features to consider when looking for the best split. None means taking all $n$ features and sqrt means taking only $\sqrt{n}$ features. 
+%     \item min\_samples\_leaf: The minimum number of samples required to be at a leaf node.
+%     \item min\_samples\_split: The minimum number of samples required to split an internal node.
+%     \item n\_estimators: The number of decision trees. 
+% \end{enumerate}
 
 Best $E_{val}$ happens around $max\_depth = 2$ or $=3$, max\_features being None, $min\_samples\_leaf=10$, $min\_samples\_split=2$ and $n\_estimators = 100$. We have the following accuracy.
 
@@ -197,29 +197,38 @@ Best $E_{val}$ happens around $max\_depth = 2$ or $=3$, max\_features being None
 We can see the improvement, but we haven't unlocked the full potential of boosting yet.
 
 \subsection{XGBoost}
-XGBoost is known as eXtreme Gradient Boosting, one of the most powerful and efficient boosting model. Most interestingly, XGBoost can be trained on raw data with missing entries, so we can compare performance on all types of data. Let's see whether it can outperform AdaBoost. 
+XGBoost is known as eXtreme Gradient Boosting, one of the most powerful and efficient boosting model. Most interestingly, XGBoost can be trained on raw data with missing entries, so we can compare performance on all types of preprocessing on data.
 
 \subsubsection{Decision Trees}
-XGBoost with Decision Trees has hyperparameters similar to AdaBoost's, what's interesting is that we can apply L1/L2 regularization on it. In addition, we trained XGBoost on four kinds of data, data with and without recovery, and data with and without PCA. After extensive Grid Search with 10-fold validation, we obtain the following accuracy.
+XGBoost with Decision Trees has hyperparameters similar to AdaBoost's, what's interesting is that we can apply L1/L2 regularization on it. In addition, we trained XGBoost on four kinds of data, data with and without AutoEncoder filling, and data with and without PCA. After extensive Grid Search with 10-fold validation, we obtain the following accuracy.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|}
   \hline
   \diagbox{Data}{Sample} & In sample & Validation & \makecell{Stage 1\\ Public} & \makecell{Stage 1\\ Private} & \makecell{Stage 2 \\Public} & \makecell{Stage 2\\ Private} \\ \hline
-  \makecell{No PCA, recover} & 63.65 & 56.41 & 58.16 & 58.08 & 57.72 & 54.08 \\ \hline
-  \makecell{No PCA, has recover} & 61.29 & 56.18 & 57.32 & 57.82 & 53.57 & 52.21 \\ \hline
-  \makecell{Has PCA, recover} & 64.94 & 62.06 & 56.29 & 56.23 & 52.65 & 52.36 \\ \hline
+  \makecell{No PCA, filling} & 63.65 & 56.41 & 58.16 & 58.08 & 57.72 & 54.08 \\ \hline
+  \makecell{No PCA, has filling} & 61.29 & 56.18 & 57.32 & 57.82 & 57.80 & 56.04 \\ \hline
+  \makecell{Has PCA, no filling} & 64.94 & 62.06 & 56.13 & 56.30 & 52.74 & 52.53 \\ \hline
+  \makecell{Has PCA, filling} & 64.94 & 62.06 & 56.29 & 56.23 & 52.65 & 52.36 \\ \hline
   \end{tabular}
   \caption{Accuracy of XGBoost with Decision Trees, With or Without PCA and Recovery }
   \label{tab:xgb-deci-tree-acc}
 \end{table}
 
-\subsubsection{Dart}
+We can see that data with absolutely no preprocessing tends to give us a better result in both stages, public and private. It is also noticeable that data with PCA misleads us with higher validation accuracy but perform poorly on out-of-sample dataset. \\
+On the other hand, AutoEncoder filling doesn't make a significant impact except on Stage 2 Private, this is possible since after all, only $5\%$ of data is missing.\\
+Also, tree heights of Decision Trees differ in different kinds of boosting algorithm and datas. In AdaBoost on data with PCA, best height is around 2 and 3, but XGBoost on data with PCA, tree tends to grow to height of 9, however, XGBoost with completely raw data only needs tree with height less than 5 to achieve remarkable performance. All of them only need 50 to 100 decision trees. This can be due to the difference in boosting algorithm and variance of regularization.\\
+But overall, we achieve leaps in performance with XGBoost.
 
-\subsubsection{Linear Regression}
+% Delete for the sake of length
+% \subsubsection{Dart}
+% Dart is a special kind of Decision Tree model that implements dropouts which sometimes battle overfitting. It shares basically all the hyperparameters with Decision Tree so the tuning is similar. After extensive Grid Search we obtain the following result.
+
+% \subsubsection{Linear Regression}
 
 \subsection{Blending}
+
 
 \subsection{Clustering Methods}
 In this project we 

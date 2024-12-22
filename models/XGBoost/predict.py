@@ -4,11 +4,11 @@ import xgboost as xgb
 import csv
 
 def load_data():
-    with open('../../preprocess/processing/recover_processed_data.pkl', 'rb') as f:
+    with open('../../preprocess/processing/processed_data(1)', 'rb') as f:
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)
-    with open('../../preprocess/processing/test2_recover', 'rb') as f:
+    with open('../../preprocess/processing/test2(1)', 'rb') as f:
         test_data = pickle.load(f)
     return train_data, ground_truth.astype(int), test_data
 
@@ -29,7 +29,7 @@ def train():
     model.fit(x, y)
     res = model.predict(x_test)
     print(res)
-    with open("./stage_1_predict.csv", "w", newline='') as f:
+    with open("./stage_2_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):

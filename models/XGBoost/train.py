@@ -5,7 +5,7 @@ from sklearn.model_selection import GridSearchCV
 import xgboost as xgb
 
 def load_data():
-    with open('../../preprocess/processing/recover_processed_data.pkl', 'rb') as f:
+    with open('../../preprocess/processing/processed_data_recover', 'rb') as f:
         train_data = pickle.load(f)
     with open('../../preprocess/processing/ground_truth', 'rb') as f:
         ground_truth = pickle.load(f)

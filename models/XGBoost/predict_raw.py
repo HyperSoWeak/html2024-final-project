@@ -27,7 +27,7 @@ def load_data():
         if col not in cat:
             data[col] = data[col].astype(float)
 
-    test = np.array(pd.read_csv('../../data/2024_test_data_recovered.csv', sep=',', header=None))[1:]
+    test = np.array(pd.read_csv('../../data/same_season_test_data_recovered.csv', sep=',', header=None))[1:]
     test_x, test_y = test.shape
     for i in range(test_x):
         test[i][3] = 1 if train[i][3] == 'True' else 0
@@ -63,7 +63,7 @@ def train():
     model.save_model("xbg_model.json")
     res = model.predict(x_test)
     print(np.count_nonzero(res==0))
-    with open("./stage_2_predict.csv", "w", newline='') as f:
+    with open("./stage_1_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):
