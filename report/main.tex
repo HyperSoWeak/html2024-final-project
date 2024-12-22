@@ -289,6 +289,7 @@ However, the lower accuracy on the Stage 2 private leaderboard compared to Stage
 
 
 \subsection{AdaBoost}
+Fron this section on we'll discuss about various boosting models.
 
 \subsubsection{Decision Stumps}
 Starting from the weakest base model, Decision Stumps. We experiment on how many decision stumps we need by 5-fold validation.
@@ -374,13 +375,27 @@ After extensive Grid Search with 10-fold validation, we obtain the following acc
 We can see that data with absolutely no preprocessing tends to give us a better result in both stages, public and private. It is also noticeable that data with PCA misleads us with higher validation accuracy but perform poorly on out-of-sample dataset. \\
 On the other hand, AutoEncoder filling doesn't make a significant impact except on Stage 2 Private, this is possible since after all, only $5\%$ of data is missing.\\
 Also, tree heights of Decision Trees differ in different kinds of boosting algorithm and datas. In AdaBoost on data with PCA, best height is around 2 and 3, but XGBoost on data with PCA, tree tends to grow to height of 9, however, XGBoost with completely raw data only needs tree with height less than 5 to achieve remarkable performance. All of them only need 50 to 100 decision trees. This can be due to the difference in boosting algorithm and variance of regularization.\\
-But overall, we achieve leaps in performance and robustness compared to AdaBoost with XGBoost on raw data.
+But overall, we achieve leaps in performance and robustness compared to AdaBoost with XGBoost on raw data. However, we can already see a bit of overfitting in Stage 2 Private.
 
 % Delete for the sake of length
 % \subsubsection{Dart}
 % Dart is a special kind of Decision Tree model that implements dropouts which sometimes battle overfitting. It shares basically all the hyperparameters with Decision Tree so the tuning is similar. After extensive Grid Search we obtain the following result.
 
 % \subsubsection{Linear Regression}
+
+\subsection{Clustering Methods}
+In this project we tries to perform data splitting than assign the best arrangement of winning and losing on the data in the same cluster.
+Since logistic regression, voting, DNN and most other method can be seen as seperating data points and the closest data will be assigned with the same win or lose.
+Hence, we apply K-means clustering, Gaussian Mixture Model, and Mean Shift Clustering to cluster data points into different groups.
+Then, we assign all groups with the $E_{in}$ maximizing output.
+Hence, when prediction, the data point clustered into the specific groups will be assigned to the corresponding output identical to other data points in the same group.
+In k-means clustering, the data points are cutted into $k$ groups and iterates from $2$ to $1200$.
+However, when $k$ reaches $1200$ it means that every $10$ data point will be assigned to the same group where is super overfitting.
+Whereas, the $E_{in}$ is still as high as $0.4$, which is unacceptable.
+In GMM, we iterate $k$ from $1$ to $300$.
+It performs the same as k-means clustering, but overfits much faster, about 4 times more speed.
+In Mean Shift Clustering, the $k$ is optimized by the sklearn cluster model, and samely applies best assignment to each group ends up performance of $52\%$.
+By the result of three clustering model, we may conclude that the dataset in this final project is low related to the relation of distance in each data point, even super overfitting do no have result greater than $70\%$ accuracy.
 
 \subsection{Blending}
 With all the various models we previously built, we can apply blending with different weight to achieve better performance. 
@@ -405,24 +420,14 @@ Note that the base number of the exponential needs to be chosen carefully so the
 All kinds of blending performs outstandingly in Public, but all of them seriously overfit to the Public and have some disappointing Private score. 
 This is possibly caused by the blunt act of blending results without validation.
 
-\subsection{Clustering Methods}
-In this project we tries to perform data splitting than assign the best arrangement of winning and losing on the data in the same cluster.
-Since logistic regression, voting, DNN and most other method can be seen as seperating data points and the closest data will be assigned with the same win or lose.
-Hence, we apply K-means clustering, Gaussian Mixture Model, and Mean Shift Clustering to cluster data points into different groups.
-Then, we assign all groups with the $E_{in}$ maximizing output.
-Hence, when prediction, the data point clustered into the specific groups will be assigned to the corresponding output identical to other data points in the same group.
-In k-means clustering, the data points are cutted into $k$ groups and iterates from $2$ to $1200$.
-However, when $k$ reaches $1200$ it means that every $10$ data point will be assigned to the same group where is super overfitting.
-Whereas, the $E_{in}$ is still as high as $0.4$, which is unacceptable.
-In GMM, we iterate $k$ from $1$ to $300$.
-It performs the same as k-means clustering, but overfits much faster, about 4 times more speed.
-In Mean Shift Clustering, the $k$ is optimized by the sklearn cluster model, and samely applies best assignment to each group ends up performance of $52\%$.
-By the result of three clustering model, we may conclude that the dataset in this final project is low related to the relation of distance in each data point, even super overfitting do no have result greater than $70\%$ accuracy.
-
-
 \section{Result}
-
-\section{Discussion}
+Accuracy wise, Deep Neural Network and XGBoost have the best single model performance. They also have great stability across stages unlike Blending. 
+Efficiency wise, we found SVM and Clustering significantly slow, the rest of them takes reasonable time to train. XGBoost is especially efficient. 
+Scalability wise, models with poor efficiency tend to have poor scalability. 
+Interpretability wise, despite Deep Neural Network being our best performing model, sometimes the reason to performance gain and loss can be unclear. \\
+In the Kaggle competition, we chose Blending as our final model since it has the best public score. In retrospect, it was a mistake because it severely overfits to the Public test dataset. 
+We should apply a more rigorous validation on Blending or at least chose one model such as DNN with good validation score. \\
+Overall, considering all the factors mentioned above, the model we recommend is Deep Neural Network given to its stable accuracy and efficiency. 
 
 \section{Reference}
 
