@@ -195,6 +195,30 @@ The learning curves for the linear and Gaussian kernel SVM models provide insigh
 
 \subsection{Random Forest}
 
+In this section, we discuss the performance of the Random Forest classifier. The model was implemented using the \texttt{sklearn.ensemble.RandomForestClassifier} class, and hyperparameter tuning was performed using \texttt{GridSearchCV} with 3-fold cross-validation. The parameter grid used for tuning is shown below:
+
+\begin{itemize}
+    \item \texttt{n\_estimators}: [100, 200, 500, 1000]
+    \item \texttt{max\_depth}: [None, 10, 20, 30]
+    \item \texttt{min\_samples\_split}: [2, 10, 20]
+    \item \texttt{min\_samples\_leaf}: [1, 5, 10]
+\end{itemize}
+
+Additionally, we set \texttt{max\_features} = sqrt, \texttt{bootstrap} = True, and \texttt{criterion} = gini. The best cross-validation accuracy achieved during grid search was \textbf{60.65\%}. The best hyperparameters found during grid search were: \texttt{max\_depth} = 10, \texttt{min\_samples\_leaf} = 5, \texttt{min\_samples\_split} = 2, and \texttt{n\_estimators} = 1000.
+
+Using these best hyperparameters, we trained the final model on the entire training set and evaluated its performance in the Kaggle competition.
+
+\paragraph{Kaggle Performance}
+
+The Random Forest model achieved the following Kaggle scores: Stage 1 Public: \textbf{0.57488}, Stage 1 Private: \textbf{0.57078}, Stage 2 Public: \textbf{0.54152}, and Stage 2 Private: \textbf{0.54983}.
+
+\paragraph{Discussion}
+
+The Random Forest model delivered a cross-validation accuracy of \textbf{60.65\%}. However, the scores in the Kaggle competition, particularly in Stage 2, suggest that while the model performed reasonably well on the training set, its ability to generalize to unseen data was somewhat limited. The decline in performance between Stage 1 and Stage 2 indicates potential overfitting, or that the model struggled with more challenging or diverse test sets. Nevertheless, Random Forest remains a robust choice, especially when tuned carefully with appropriate hyperparameters.
+
+
+
+
 \subsection{Neural Network}
 
 \subsection{XGBoost}
