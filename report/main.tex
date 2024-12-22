@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[margin=2cm, left=1.5cm, right=1.5cm]{geometry}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{fancyhdr}
@@ -29,7 +29,7 @@
 % remove all figures for faster compilation
 % \usepackage[allfiguresdraft]{draftfigure}
 
-\linespread{1.25}
+\linespread{1.10}
 
 \begin{document}
 \begin{center}
@@ -191,30 +191,21 @@ Further adjustments to the model or feature engineering may be necessary to impr
 
 
 
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
-  \begin{minipage}{0.2\textwidth}
+  \begin{minipage}{0.3\textwidth}
       \centering
-      \includegraphics[width=0.8\textwidth]{images/learning_curve_linear_SVM.png}
-      \caption[width=0.8\linewidth]{linear SVM learning curve}
+      \includegraphics[width=\textwidth]{images/learning_curve_linear_SVM.png}
       \label{fig:linear_SVM_curve}
   \end{minipage}%
-  \begin{minipage}{0.05\textwidth}
-      \ 
-  \end{minipage}
-  \begin{minipage}{0.2\textwidth}
+  \begin{minipage}{0.3\textwidth}
       \centering
-      \includegraphics[width=0.8\textwidth]{images/learning_curve_gaussian_SVM.png}
-      \caption[width=0.8\linewidth]{gaussian SVM learning curve}
+      \includegraphics[width=\textwidth]{images/learning_curve_gaussian_SVM.png}
       \label{fig:gaussian_SVM_curve}
   \end{minipage}%
-  \begin{minipage}{0.05\textwidth}
-      \ 
-  \end{minipage}%
-  \begin{minipage}{0.2\textwidth}
+  \begin{minipage}{0.3\textwidth}
       \centering
-      \includegraphics[width=0.8\textwidth]{images/learning_curve_random_forest.png}
-      \caption[width=0.8\linewidth]{random forest learning curve}
+      \includegraphics[width=\textwidth]{images/learning_curve_random_forest.png}
       \label{fig:random_forest_curve}
   \end{minipage}
 \end{figure}
