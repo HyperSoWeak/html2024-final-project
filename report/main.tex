@@ -9,6 +9,7 @@
 \usepackage{array}
 \usepackage{diagbox}
 \usepackage{makecell}
+\usepackage{hyperref}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -426,9 +427,17 @@ Efficiency wise, we found SVM and Clustering significantly slow, the rest of the
 Scalability wise, models with poor efficiency tend to have poor scalability. 
 Interpretability wise, despite Deep Neural Network being our best performing model, sometimes the reason to performance gain and loss can be unclear. \\
 In the Kaggle competition, we chose Blending as our final model since it has the best public score. In retrospect, it was a mistake because it severely overfits to the Public test dataset. 
-We should apply a more rigorous validation on Blending or at least chose one model such as DNN with good validation score. \\
+We should apply a more rigorous validation on Blending or at least choose one model such as DNN with good validation score. 
+However, 5-fold or even 10-fold validation hasn't been very reliable in the competition. With PCA pre-processed data, validation score is too high and misleading. Meanwhile validation score on models trained on raw data tends to be more accurate but somewhat lower than the out of sample accuracy. \\
 Overall, considering all the factors mentioned above, the model we recommend is Deep Neural Network given to its stable accuracy and efficiency. 
 
+\section{Workloads}
+B12902119 胡祐誠: AutoEncoder preprocessing, SVM, Random Forest, Deep Neural Network\\
+B12902123 常洧丞: AdaBoost, XGBoost, Blending\\
+B12902037 張聲元: PCA preprocessing, Clustering\\
+B11902139 洪佑全: Logistic Regression\\
+
 \section{Reference}
+XGBoost Documentation: \url{https://xgboost.readthedocs.io/en/latest/index.html}
 
 \end{document}
