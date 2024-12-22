@@ -219,7 +219,44 @@ However, the scores in the Kaggle competition, particularly in Stage 2, suggest 
 
 
 
-\subsection{Neural Network}
+\subsection{Deep Neural Network}
+
+After trying various models, we tried to use a deep neural network (DNN). Unlike other models, DNNs do not require data preprocessing or feature transformation, which helps avoid overinterpreting the data. However, DNNs have some drawbacks: they involve many hyperparameters to tune, longer training times, and it can be difficult to find the best network structure.
+
+The DNN model was built using Keras with TensorFlow, and hyperparameter tuning was done using 3-fold cross-validation. We tested different configurations for the network architecture, batch size, dropout rate, learning rate, and activation function. We also used early stopping with a patience of 10 epochs and reduced the learning rate if the validation loss did not improve for 5 epochs.
+
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+  \hline
+  Hyperparameter & Batch size & Dropout rate & Learning rate & Activation function \\ \hline
+  Values (\%) & 32, 64 & 0.3, 0.5 & 0.1, 0.01, 0.001 & relu, sigmoid, tanh \\ \hline
+  \end{tabular}
+  \caption{Hyperparameters for DNN model}
+\end{table}
+
+The best configuration found was a network with layers [128, 64, 64, 32], batch size of 64, dropout rate of 0.5, learning rate of 0.001, and activation function of tanh. This model was then retrained on the entire training set.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  Sample & Validation & Stage 1 Public & Stage 1 Private & Stage 2 Public & Stage 2 Private \\ \hline
+  Accuracy (\%) & 57.04 & 58.65 & 58.05 & 57.72 & 53.68 \\ \hline
+  \end{tabular}
+  \caption{Accuracy of the best DNN model}
+\end{table}
+
+The DNN exceeded our expectations, outperforming models where we spent significant time on feature engineering. Interestingly, the Kaggle score was higher than the validation score, whereas previous models typically had lower test scores. This suggests the model is not overfitting.
+
+Dropout and early stopping helped mitigate overfitting, but the network architecture or regularization may still need improvement. Despite longer training times and complex hyperparameter tuning, the DNN's ability to learn complex patterns makes it a promising option for future work, if its complexity is properly managed.
+
+However, the lower accuracy on the Stage 2 private leaderboard compared to Stage 1 is unexpected. This could indicate that the model doesn't generalize well to Stage 2 private data. If we emphasize the time-dependent relationships in the data, the model might perform better.
+
+
+
+
 
 \subsection{AdaBoost}
 
