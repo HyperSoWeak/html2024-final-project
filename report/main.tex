@@ -320,7 +320,7 @@ We take the best one with 100 decision stumps and get the following accuracy.
   \label{tab:ada-deci-stump-acc}
 \end{table}
 
-Not very ideal, but we can do better with AdaBoost.
+The accuracy isn't very ideal, but we can do better with AdaBoost.
 
 \subsubsection{Decision Trees}
 AdaBoost can be coupled with better base learner such as shallow Decision Trees, which has way more hyperparameters to tune than Decision Stumps. To find the best model, we apply extensive Grid Search with 5-fold validation on these hyperparameters in Scikit-Learn's DecisionTreeClassifier and AdaBoostClassifier API.
@@ -357,10 +357,10 @@ Best $E_{val}$ happens around $max\_depth = 2$ or $=3$, max\_features being None
   \label{tab:ada-deci-tree-acc}
 \end{table}
 
-We can see the improvement, but we haven't unlocked the full potential of boosting yet.
+We can see the improvement in both stages, but we haven't unlocked the full potential of boosting yet.
 
 \subsection{XGBoost}
-XGBoost is known as eXtreme Gradient Boosting, one of the most powerful and efficient boosting model. Most interestingly, XGBoost can be trained on raw data with missing entries, so we can compare performance on all types of preprocessing on data.
+XGBoost is known as eXtreme Gradient Boosting, one of the most powerful and efficient (built in C++, faster than Sklearn's AdaBoost!) boosting model. Most interestingly, XGBoost can be trained on raw data with missing entries, so we can compare performance on all types of preprocessing on data.
 
 \subsubsection{Decision Trees}
 XGBoost with Decision Trees has hyperparameters similar to AdaBoost's, what's interesting is that we can apply L1/L2 regularization on it. In addition, we trained XGBoost on four kinds of data, data with and without AutoEncoder filling, and data with and without PCA. 
@@ -383,7 +383,7 @@ After extensive Grid Search with 10-fold validation, we obtain the following acc
 We can see that data with absolutely no preprocessing tends to give us a better result in both stages, public and private. It is also noticeable that data with PCA misleads us with higher validation accuracy but perform poorly on out-of-sample dataset. \\
 On the other hand, AutoEncoder filling doesn't make a significant impact except on Stage 2 Private, this is possible since after all, only $5\%$ of data is missing.\\
 Also, tree heights of Decision Trees differ in different kinds of boosting algorithm and datas. In AdaBoost on data with PCA, best height is around 2 and 3, but XGBoost on data with PCA, tree tends to grow to height of 9, however, XGBoost with completely raw data only needs tree with height less than 5 to achieve remarkable performance. All of them only need 50 to 100 decision trees. This can be due to the difference in boosting algorithm and variance of regularization.\\
-But overall, we achieve leaps in performance with XGBoost.
+But overall, we achieve leaps in performance and robustness compared to AdaBoost with XGBoost on raw data.
 
 % Delete for the sake of length
 % \subsubsection{Dart}
