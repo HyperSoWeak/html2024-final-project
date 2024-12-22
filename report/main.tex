@@ -26,19 +26,98 @@
 % remove all figures for faster compilation
 % \usepackage[allfiguresdraft]{draftfigure}
 
+\setlength\parindent{0pt}
 \linespread{1.25}
 
 \begin{document}
 \begin{center}
   {\LARGE \bf HTML 2024 Final Project}\\[8pt]
   \textbf{Team:} How To Make Lasagna\\
-  B12902119 胡祐誠 B12902123 常洧丞 B12902037 張聲元 B11902139 洪佑全
+  B12902119 胡祐誠
+  B12902123 常洧丞
+  B12902037 張聲元
+  B11902139 洪佑全
 \end{center}
 
 
 \section{Introduction}
 
+
 \section{Preprocessing}
+\subsection{empty data filling}
+From the dataset obtained, there are $5\%$ per column of data missing, which increases the hardness to predict and to feed the data into model.
+To convert the data into all floating point numbers to the model is crucial for not having strings and nan to effect the training process. \\
+For strings, we first find out that most of the strings represent the names of team and players.
+For a machine learning model to recognize the teams and players which links advantages between teams and players are not feasible to achieve by dataset only with about $12000$ data yet $30$ teams and $900$ pitchers.
+Thus, converting the strings of player names into averall winning probabilities has more statistical meanings. 
+However, since there are only $30$ teams it is plausible to convert to either a one hot vector of size $30$ or floating point numbers indicating team winning probabilities.
+For those empty values, we then have two approaches, first is to simply convert those empty values to $0$, and another is using auto encoder to prerpocess the data and to fill the holes in the data. \\
+
+\subsubsection{zero mapping}
+Since mapping all empty values to zero values is naive, yet it intuitively allows the model to perform properly in most of the prediction algorithms.
+However, zero mapping has an issue that all of our models cannot pass the baseline, which the performance lingers about $54\%$ to $57\%$. \\
+From the point of view that zero mapping allows the first-step data to be passed to the model, whereas, the mapping to zero may contain large bias to the original data.
+All $5\%$ of data are marked to zero which considerabily affect the aggregation of data, namely too much bias.
+
+\subsubsection{auto encoder}
+To solve the problem arise from mapping all empty values to zero, we utilize the features of the auto encoder that it filters the essential features and discard the non-essential ones.
+Since training of auto encoder is goal to rebuild the same data out of the extracted features, we can utilize it to generate data with no holes which are more likely to resemble the original data. \\
+By auto encoder, we finally passed the baseline by simple DNN, which shows that mapping empty values to zero decreases the statistical meaning and model performance significantly.
+
+
+\subsection{PCA data simplification}
+A data too complex or having too many similar features distracts the model while training and often leads to overfitting or falling into local minima.
+To solve the problem we use PCA on highly similar columns to reduces the complexity of training data by half. \\
+
+Our method first finds all pair of Pearson corelation coefficients and perform disjoint set union on those pair of correlation coefficient absolute value higher than $0.5$.
+Then, apply PCA on those set having element greater than 1, reduce their dimensions by half, then rebuild the data with PCA processed columns. \\
+
+By doing such preprocess, we find out interesting pattern in the dataset.
+Some of the data pairs are highly similar in a third rank polynomial pattern, shown as below figure \ref{fig:51-53} and figure \ref{fig:51-53r}.
+Also, the below pairs of figure \ref{fig:29-129}, figure \ref{fig:29-129r} and figure \ref{fig:51-53}, figure \ref{fig:51-53r} are highly similar data with high $r^2$ values plotting together.
+We can find out that zero mapping highly distracts the dataset by forming two protruding straight lines as in figure \ref{fig:29-129} and figure \ref{fig:51-53}.
+Also, from the recovered data using auto encoder, we can eliminate the two perpendicular straight lines and results in a higher $r^2$ value in the same similar pair as in figure \ref{fig:29-129r} and figure \ref{fig:51-53r}.
+However, auto encoder sometimes fails to fill the accurate data and leads to some data points very far away from the data cluster as in figure \ref{fig:51-53r} the left and right most points.
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{0.64r_51_to_53.png}
+        \caption[width=0.8\linewidth]{Column 51 to column 53 fill nan with zeros}
+        \label{fig:51-53}
+    \end{minipage}%
+    \begin{minipage}{.1\textwidth}
+        \ 
+    \end{minipage}%
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{0.75r_51_to_53_recovered.png}
+        \caption[width=0.8\linewidth]{Column 51 to column 53 preprocess using auto encoder}
+        \label{fig:51-53r}
+    \end{minipage}
+
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{0.87r_29_to_129.png}
+        \caption[width=0.8\linewidth]{Column 29 to column 129 fill nan with zeros}
+        \label{fig:29-129}
+    \end{minipage}%
+    \begin{minipage}{.1\textwidth}
+        \ 
+    \end{minipage}%
+    \begin{minipage}{.4\textwidth}
+        \centering
+        \includegraphics[width=0.8\linewidth]{0.93r_29_to_129_recovered.png}
+        \caption[width=0.8\linewidth]{Column 29 to column 129 preprocess using auto encoder}
+        \label{fig:29-129r}
+    \end{minipage}
+\end{figure}
+
+After running the disjoint set union, we find out that there are $17$ goups of data to perform PCA, while two of the set has element over $10$ while others only has about $2$ to $4$ elements.
+This may imply the dataset has numerous similar data columns that those columns represents the same or similar patterns and may cause training distraction, increase training time and performance cost.
+
 
 \section{Model}
 
@@ -46,81 +125,16 @@
 
 Logistic regression is the only approach we use that is in the MLF. We expect that it will be the least accurate one, but we still want to see how it performs. We used the preprocessed data to train the model, and split the data into 80\% training and 20\% validation. We trained the model 5000 times and choose the one with the highest validation accuracy for both stage 1 and stage 2. The highest validation accuracy we got in stage 1 was 0.64, and in stage 2 was 0.61. In spite of this, the performance of logistic regression in private was 0.56 in stage 1, and 0.53 in stage 2. Overall, logistic regression is one of the worst models we used in this project.
 
-
-
 \subsection{Support Vector Machine}
-
-In this section, we discuss the application of three different Support Vector Machine (SVM) models: linear kernel, polynomial kernel, and Gaussian kernel.
-
-
-\subsubsection{Linear Kernel}
-
-For the linear kernel SVM, we implemented the model using the \texttt{sklearn.svm.SVC} class and conducted hyperparameter tuning with \texttt{GridSearchCV}. The grid search was performed with 3-fold cross-validation, focusing on two key hyperparameters:
-\begin{itemize}
-    \item \texttt{C}: [0.1, 1.0, 10]
-    \item \texttt{tol}: [1e-3, 1e-4]
-\end{itemize}
-
-The best hyperparameters found were \texttt{C} = 10 and \texttt{tol} = 0.001, with a cross-validation accuracy of \textbf{60.57\%}. We use the best hyperparameters and full training data to train the final model.
-
-
-\paragraph{Kaggle Performance}
-
-The linear kernel SVM scored \textbf{0.55681} (public) and \textbf{0.55296} (private) in Stage 1 of the Kaggle competition. In Stage 2, the scores were \textbf{0.51411} (public) and \textbf{0.52614} (private).
-
-
-\paragraph{Discussion}
-
-The linear kernel SVM provided decent performance with a validation accuracy of \textbf{63.32\%} after tuning. However, its Kaggle competition scores, particularly in Stage 2, highlight the limitations of this approach. The drop in performance from Stage 1 to Stage 2 suggests that the linear kernel struggled to generalize well to more complex or diverse test data. While the linear kernel offers simplicity and efficiency, it may not capture intricate patterns in the data, making it less competitive compared to more flexible kernels such as polynomial or Gaussian in this particular task.
-
-
-\subsubsection{Polynomial Kernel}
-
-We experimented with a polynomial kernel SVM, but the results were suboptimal, yielding poor accuracy compared to the linear and Gaussian kernels. Due to its underperformance, the polynomial kernel was not considered for the final submission, and we proceeded directly to testing the Gaussian kernel, which showed more promise.
-
-
-\subsubsection{Gaussian Kernel}
-
-For the Gaussian kernel SVM, we also utilized the \texttt{sklearn.svm.SVC} class and performed hyperparameter tuning with \texttt{GridSearchCV}. The grid search was conducted using 3-fold cross-validation and focused on the following hyperparameters: \begin{itemize} \item \texttt{C}: [0.1, 1.0, 10] \item \texttt{gamma}: [1e-3, 1e-4, 0.001] \end{itemize}
-
-The best hyperparameters found were \texttt{C} = 10 and \texttt{gamma} = 0.001, with a cross-validation accuracy of \textbf{57.01\%}. We use the best hyperparameters and full training data to train the final model.
-
-
-\paragraph{Kaggle Performance}
-
-The Gaussian kernel SVM achieved \textbf{0.56294} on the public leaderboard and \textbf{0.57304} on the private leaderboard for Stage 1 of the Kaggle competition. In Stage 2, the scores were \textbf{0.55897} on the public leaderboard and \textbf{0.53022} on the private leaderboard.
-
-
-\paragraph{Discussion}
-
-The Gaussian kernel SVM showed a solid performance in the Kaggle competition, particularly with a higher private leaderboard score compared to the linear kernel. However, its performance dropped slightly in Stage 2, suggesting that the Gaussian kernel, while better able to model complex patterns, may still struggle with generalization to certain test data. The relatively high private leaderboard score in Stage 1 indicates that the Gaussian kernel was able to capture more intricate patterns than the linear kernel, but further adjustments or a more sophisticated approach may still be necessary to achieve consistently high performance across all stages.
-
-
-
-\subsubsection{Discussion}
-
-\begin{figure}[h]
-  \centering
-  \begin{minipage}{0.45\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{images/learning_curve_linear_SVM.png}
-  \end{minipage}
-  \begin{minipage}{0.45\textwidth}
-      \centering
-      \includegraphics[width=\textwidth]{images/learning_curve_gaussian_SVM.png}
-  \end{minipage}
-\end{figure}
-
-The learning curves for the linear and Gaussian kernel SVM models provide insights into their performance. The linear kernel SVM shows a consistent gap between the training and validation accuracy, indicating that the model may be underfitting the data. In contrast, the Gaussian kernel SVM exhibits a smaller gap, suggesting that it may be better suited to capturing the underlying patterns in the data. However, the slight decrease in validation accuracy with more training data in the Gaussian kernel SVM indicates that the model may still struggle with generalization to unseen data. Further adjustments to the model or feature engineering may be necessary to improve its performance.
-
-
-
 
 \subsection{Random Forest}
 
 \subsection{Neural Network}
 
 \subsection{XGBoost}
+
+\subsection{Clustering Methods}
+In this project we 
 
 \section{Result}
 

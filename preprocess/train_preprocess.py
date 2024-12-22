@@ -120,7 +120,7 @@ def preprocess_data(train_data: np.ndarray, r2_threshold=0.25, plots_path='prepr
             plt.xlabel(f'column {px}')
             plt.ylabel(f'column {py}')
             plt.legend(loc='best')
-            plt.savefig(f'{plots_path}/{r_values[px][py]:.2f}r_{px}_to_{py}.png')
+            plt.savefig(f'{plots_path}/{r_values[px][py]:.2f}r_{px}_to_{py}_recovered.png')
             plt.close()
     
     dsu = DisjointSetUnion(y)
