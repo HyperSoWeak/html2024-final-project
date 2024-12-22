@@ -121,22 +121,33 @@ Overall, logistic regression is one of the worst models we used in this project.
 
 
 \subsection{Support Vector Machine}
-In this section, we discuss the application of three different Support Vector Machine (SVM) models: linear kernel, polynomial kernel, and Gaussian kernel.
 
+Support Vector Machine (SVM) is a powerful supervised learning algorithm that can be used for our task. In this section, we discuss the application of three different SVM models: linear kernel, polynomial kernel, and Gaussian kernel. We use the \texttt{sklearn} library to implement the SVM models and perform hyperparameter tuning to optimize their performance.
 
 \subsubsection{Linear Kernel}
-For the linear kernel SVM, we implemented the model using the \texttt{sklearn.svm.SVC} class and conducted hyperparameter tuning with \texttt{GridSearchCV}. The grid search was performed with 3-fold cross-validation, focusing on two key hyperparameters:
-\begin{itemize}
-    \item \texttt{C}: [0.1, 1.0, 10]
-    \item \texttt{tol}: [1e-3, 1e-4]
-\end{itemize}
-The best hyperparameters found were \texttt{C} = 10 and \texttt{tol} = 0.001, with a cross-validation accuracy of \textbf{60.57\%}. We use the best hyperparameters and full training data to train the final model.
+We first implemented the linear SVM model, performed grid search with 3-fold cross-validation, focusing on two key hyperparameters:
 
-\paragraph{Kaggle Performance}
-The linear kernel SVM scored \textbf{0.55681} (public) and \textbf{0.55296} (private) in Stage 1 of the Kaggle competition. In Stage 2, the scores were \textbf{0.51411} (public) and \textbf{0.52614} (private).
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|}
+  \hline
+  Hyperparameter & Regularization Parameter (\texttt{C}) & Tolerance for Stopping Criterion (\texttt{tol}) \\ \hline
+  Values & 0.1, 1.0, 10 & 0.001, 0.0001 \\ \hline
+  \end{tabular}
+  \caption{Hyperparameters for linear SVM model}
+\end{table}
 
-\paragraph{Discussion}
-The linear kernel SVM provided decent performance with a validation accuracy of \textbf{63.32\%} after tuning. However, its Kaggle competition scores, particularly in Stage 2, highlight the limitations of this approach. The drop in performance from Stage 1 to Stage 2 suggests that the linear kernel struggled to generalize well to more complex or diverse test data. While the linear kernel offers simplicity and efficiency, it may not capture intricate patterns in the data, making it less competitive compared to more flexible kernels such as polynomial or Gaussian in this particular task.
+The best hyperparameters found were \texttt{C} = 10 and \texttt{tol} = 0.001. This model was then retrained on the entire training set.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  Sample & Validation & Stage 1 Public & Stage 1 Private & Stage 2 Public & Stage 2 Private \\ \hline
+  Accuracy (\%) & 63.32 & 55.68 & 55.30 & 51.41 & 52.61 \\ \hline
+  \end{tabular}
+  \caption{Accuracy of the best linear SVM model}
+\end{table}
 
 
 \subsubsection{Polynomial Kernel}
@@ -144,46 +155,33 @@ We experimented with a polynomial kernel SVM, but the results were suboptimal, y
 
 
 \subsubsection{Gaussian Kernel}
-For the Gaussian kernel SVM, we also utilized the \texttt{sklearn.svm.SVC} class and performed hyperparameter tuning with \texttt{GridSearchCV}. The grid search was conducted using 3-fold cross-validation and focused on the following hyperparameters: \begin{itemize} \item \texttt{C}: [0.1, 1.0, 10] \item \texttt{gamma}: [1e-3, 1e-4, 0.001] \end{itemize}
-The best hyperparameters found were \texttt{C} = 10 and \texttt{gamma} = 0.001, with a cross-validation accuracy of \textbf{57.01\%}. We use the best hyperparameters and full training data to train the final model.
+For the Gaussian kernel SVM, we also performed hyperparameter tuning using grid search with 3-fold cross-validation. The grid search focused on the following hyperparameters:
 
-\paragraph{Kaggle Performance}
-The Gaussian kernel SVM achieved \textbf{0.56294} on the public leaderboard and \textbf{0.57304} on the private leaderboard for Stage 1 of the Kaggle competition. In Stage 2, the scores were \textbf{0.55897} on the public leaderboard and \textbf{0.53022} on the private leaderboard.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|}
+  \hline
+  Hyperparameter & $C$ & $\gamma$ \\ \hline
+  Values & 0.1, 1.0, 10 & 0.01, 0.001, 0.0001 \\ \hline
+  \end{tabular}
+  \caption{Hyperparameters for Gaussian SVM model}
+\end{table}
 
-\paragraph{Discussion}
-The Gaussian kernel SVM showed a solid performance in the Kaggle competition, particularly with a higher private leaderboard score compared to the linear kernel. However, its performance dropped slightly in Stage 2, suggesting that the Gaussian kernel, while better able to model complex patterns, may still struggle with generalization to certain test data. The relatively high private leaderboard score in Stage 1 indicates that the Gaussian kernel was able to capture more intricate patterns than the linear kernel, but further adjustments or a more sophisticated approach may still be necessary to achieve consistently high performance across all stages.
+The best hyperparameters found were \texttt{C} = 10 and \texttt{gamma} = 0.001. We use the best hyperparameters and full training data to train the final model.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  Sample & Validation & Stage 1 Public & Stage 1 Private & Stage 2 Public & Stage 2 Private \\ \hline
+  Accuracy (\%) & 57.01 & 56.29 & 57.30 & 55.90 & 53.02 \\ \hline
+  \end{tabular}
+  \caption{Accuracy of the best Gaussian SVM model}
+\end{table}
 
 
 
 \subsubsection{Discussion}
-
-\begin{figure}[b]
-    \centering
-    \begin{minipage}{0.2\textwidth}
-        \centering
-        \includegraphics[width=0.8\textwidth]{images/learning_curve_linear_SVM.png}
-        \caption[width=0.8\linewidth]{linear SVM learning curve}
-        \label{fig:linear_SVM_curve}
-    \end{minipage}%
-    \begin{minipage}{0.05\textwidth}
-        \ 
-    \end{minipage}
-    \begin{minipage}{0.2\textwidth}
-        \centering
-        \includegraphics[width=0.8\textwidth]{images/learning_curve_gaussian_SVM.png}
-        \caption[width=0.8\linewidth]{gaussian SVM learning curve}
-        \label{fig:gaussian_SVM_curve}
-    \end{minipage}%
-    \begin{minipage}{0.05\textwidth}
-        \ 
-    \end{minipage}%
-    \begin{minipage}{0.2\textwidth}
-        \centering
-        \includegraphics[width=0.8\textwidth]{images/learning_curve_random_forest.png}
-        \caption[width=0.8\linewidth]{random forest learning curve}
-        \label{fig:random_forest_curve}
-    \end{minipage}
-\end{figure}
 
 The learning curves  for the linear and Gaussian kernel SVM models provide insights into their performance.
 The linear kernel SVM shows a consistent gap between the training and validation accuracy, indicating that the model may be underfitting the data.
@@ -192,29 +190,70 @@ However, the slight decrease in validation accuracy with more training data in t
 Further adjustments to the model or feature engineering may be necessary to improve its performance.
 
 
+
+\begin{figure}[h]
+  \centering
+  \begin{minipage}{0.2\textwidth}
+      \centering
+      \includegraphics[width=0.8\textwidth]{images/learning_curve_linear_SVM.png}
+      \caption[width=0.8\linewidth]{linear SVM learning curve}
+      \label{fig:linear_SVM_curve}
+  \end{minipage}%
+  \begin{minipage}{0.05\textwidth}
+      \ 
+  \end{minipage}
+  \begin{minipage}{0.2\textwidth}
+      \centering
+      \includegraphics[width=0.8\textwidth]{images/learning_curve_gaussian_SVM.png}
+      \caption[width=0.8\linewidth]{gaussian SVM learning curve}
+      \label{fig:gaussian_SVM_curve}
+  \end{minipage}%
+  \begin{minipage}{0.05\textwidth}
+      \ 
+  \end{minipage}%
+  \begin{minipage}{0.2\textwidth}
+      \centering
+      \includegraphics[width=0.8\textwidth]{images/learning_curve_random_forest.png}
+      \caption[width=0.8\linewidth]{random forest learning curve}
+      \label{fig:random_forest_curve}
+  \end{minipage}
+\end{figure}
+
+
+
 \subsection{Random Forest}
 
-In this section, we discuss the performance of the Random Forest classifier. The model was implemented using the \texttt{sklearn.ensemble.RandomForestClassifier} class, and hyperparameter tuning was performed using \texttt{GridSearchCV} with 3-fold cross-validation. The parameter grid used for tuning is shown below:
+The Random Forest model was implemented using the \texttt{sklearn.ensemble.RandomForestClassifier} class, and hyperparameter tuning was performed using \texttt{GridSearchCV} with 3-fold cross-validation. The parameter grid used for tuning is shown below:
 
-\begin{itemize}
-    \item \texttt{n\_estimators}: [100, 200, 500, 1000]
-    \item \texttt{max\_depth}: [None, 10, 20, 30]
-    \item \texttt{min\_samples\_split}: [2, 10, 20]
-    \item \texttt{min\_samples\_leaf}: [1, 5, 10]
-\end{itemize}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+  \hline
+  Hyperparameter & \texttt{n\_estimators} & \texttt{max\_depth} & \texttt{min\_samples\_split} & \texttt{min\_samples\_leaf} \\ \hline
+  Values & 100, 200, 500, 1000 & None, 10, 20, 30 & 2, 10, 20 & 1, 5, 10 \\ \hline
+  \end{tabular}
+  \caption{Hyperparameters for Random Forest model}
+\end{table}
 
-Additionally, we set \texttt{max\_features} = sqrt, \texttt{bootstrap} = True, and \texttt{criterion} = gini. The best cross-validation accuracy achieved during grid search was \textbf{60.65\%}. The best hyperparameters found during grid search were: \texttt{max\_depth} = 10, \texttt{min\_samples\_leaf} = 5, \texttt{min\_samples\_split} = 2, and \texttt{n\_estimators} = 1000.
+Additionally, we set \texttt{max\_features} = sqrt, \texttt{bootstrap} = True, and \texttt{criterion} = gini. The best hyperparameters found during grid search were: \texttt{max\_depth} = 10, \texttt{min\_samples\_leaf} = 5, \texttt{min\_samples\_split} = 2, and \texttt{n\_estimators} = 1000. The performance are shown in the table below.
 
-Using these best hyperparameters, we trained the final model on the entire training set and evaluated its performance in the Kaggle competition.
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  Sample & Validation & Stage 1 Public & Stage 1 Private & Stage 2 Public & Stage 2 Private \\ \hline
+  Accuracy (\%) & 60.65 & 57.49 & 57.08 & 54.15 & 54.98 \\ \hline
+  \end{tabular}
+  \caption{Accuracy of the best Random Forest model}
+\end{table}
 
-\paragraph{Kaggle Performance}
+The Random Forest model showed good cross-validation accuracy, but its Kaggle leaderboard performance, especially in Stage 2, was lower than expected. We anticipated better results since Random Forest can capture complex relationships and handle non-linear patterns. However, after trying various parameter settings, the performance wasn't as high as hoped. Further improvement may be possible through additional feature engineering.
 
-The Random Forest model achieved the following Kaggle scores: Stage 1 Public: \textbf{0.57488}, Stage 1 Private: \textbf{0.57078}, Stage 2 Public: \textbf{0.54152}, and Stage 2 Private: \textbf{0.54983}.
 
-\paragraph{Discussion}
 
-The Random Forest model delivered a cross-validation accuracy of \textbf{60.65\%} as figure \ref{fig:random_forest_curve}.
-However, the scores in the Kaggle competition, particularly in Stage 2, suggest that while the model performed reasonably well on the training set, its ability to generalize to unseen data was somewhat limited. The decline in performance between Stage 1 and Stage 2 indicates potential overfitting, or that the model struggled with more challenging or diverse test sets. Nevertheless, Random Forest remains a robust choice, especially when tuned carefully with appropriate hyperparameters.
+
+
+
 
 
 
@@ -231,7 +270,7 @@ The DNN model was built using Keras with TensorFlow, and hyperparameter tuning w
   \begin{tabular}{|c|c|c|c|c|}
   \hline
   Hyperparameter & Batch size & Dropout rate & Learning rate & Activation function \\ \hline
-  Values (\%) & 32, 64 & 0.3, 0.5 & 0.1, 0.01, 0.001 & relu, sigmoid, tanh \\ \hline
+  Values & 32, 64 & 0.3, 0.5 & 0.1, 0.01, 0.001 & relu, sigmoid, tanh \\ \hline
   \end{tabular}
   \caption{Hyperparameters for DNN model}
 \end{table}
