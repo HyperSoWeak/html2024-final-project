@@ -3,7 +3,8 @@ import pickle
 import pandas as pd
 
 test_data_path = os.path.join(os.path.dirname(__file__), '../../preprocess/processing/test2_recover')
-model_path = os.path.join(os.path.dirname(__file__), 'models/rf-rec.pkl')
+model_name = 'rf-rec'
+model_path = os.path.join(os.path.dirname(__file__), f'models/{model_name}.pkl')
 
 
 def load_test():
@@ -29,8 +30,7 @@ if __name__ == '__main__':
         'home_team_win': [True if pred == 1 else False for pred in y_test_pred]
     })
 
-    file_name = os.path.splitext(os.path.basename(__file__))[0]
-    submission_path = os.path.join(os.path.dirname(__file__), f'submissions/{file_name}.csv')
+    submission_path = os.path.join(os.path.dirname(__file__), f'submissions/{model_name}_stage2_submissions.csv')
     submission_df.to_csv(submission_path, index=False)
 
     print("Submission file generated at:", submission_path)
