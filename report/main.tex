@@ -134,7 +134,13 @@ Logistic regression is the only approach we use that is in the MLF. We expect th
 \subsection{XGBoost}
 
 \subsection{Clustering Methods}
-In this project we 
+In this project we tries to perform data splitting than assign the best arrangement of winning and losing on the data in the same cluster.
+Since logistic regression, voting, DNN and most other method can be seen as seperating data points and the closest data will be assigned with the same win or lose.
+Hence, we apply K-means clustering, Gaussian Mixture Model, and Mean Shift Clustering to cluster data points into different groups.
+Then, we assign all groups with the $E_{in}$ maximizing output.
+Hence, when prediction, the data point clustered into the specific groups will be assigned to the corresponding output identical to other data points in the same group.
+
+\subsubsection{K-means Clustering}
 
 \section{Result}
 
