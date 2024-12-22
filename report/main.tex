@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[margin=2cm, left=1.5cm, right=1.5cm]{geometry}
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{fancyhdr}
@@ -51,17 +51,12 @@ From the dataset obtained, there are $5\%$ per column of data missing, which inc
 First, there are only $30$ teams it is plausible to convert to either a one hot vector of size $30$ or floating point numbers indicating team winning probabilities.
 For those empty values, we can set those empty values to $0$, or use auto encoder to fill the holes.
 
-\subsubsection{zero mapping}
 Since mapping all empty values to zero values is naive yet it intuitivem, which the performance lingers about $54\%$ to $57\%$.
 The mapping to zero may contain large bias to the original data by $5\%$ of data are marked affect the aggregation of data.
 
-\subsubsection{auto encoder}
 We utilize the features of the auto encoder to rebuild the same data out of the extracted features, we can utilize it to generate data with no holes.
-
 By auto encoder, we finally passed the baseline by simple DNN, which shows that mapping empty values to zero decreases the statistical meaning and model performance significantly.
 
-
-\subsection{PCA data simplification}
 A data too complex or having too many similar features distracts the model while training and often leads to overfitting or falling into local minima.
 To solve the problem we use PCA on highly similar columns to reduces the complexity of training data by half.
 Our method first finds all pair of Pearson corelation coefficients and perform disjoint set union on those pair of correlation coefficient absolute value higher than $0.5$.
@@ -73,7 +68,6 @@ Also, from the recovered data using auto encoder, we can eliminate the two perpe
 However, auto encoder sometimes fails to fill the accurate data and leads to some data points very far away from the data cluster as in figure \ref{fig:51-53r} the left and right most points.
 After running the disjoint set union, we find out that there are $17$ goups of data to perform PCA, while two of the set has element over $10$ while others only has about $2$ to $4$ elements.
 Implying the dataset has numerous similar data columns may cause distract training and lower performance.
-
 \begin{figure}[ht]
     \centering
     \begin{minipage}{.2\textwidth}
