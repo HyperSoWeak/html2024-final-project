@@ -7,7 +7,7 @@ import csv
 import sys
 
 def load_data():
-    train = np.array(pd.read_csv('../../data/train_data.csv', sep=',', header=None))
+    train = np.array(pd.read_csv('../../data/train_data_recovered.csv', sep=',', header=None))
     header = train[0]
     train = train[1:]
     x, y = train.shape

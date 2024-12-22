@@ -19,7 +19,7 @@ def train():
         xgb_model,
         {
             "max_depth": [9], 
-            "n_estimators": [70],
+            "n_estimators": [50],
             'eta': [0.25],
             'gamma': [3],
             'lambda': [600],

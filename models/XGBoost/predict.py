@@ -14,6 +14,7 @@ def load_data():
 
 def train():
     x, y, x_test = load_data()   
+    print(x.shape[1], x_test.shape[1])
     # {'alpha': 0.1, 'eta': 0.25, 'gamma': 3, 'lambda': 600, 'max_depth': 9, 'n_estimators': 50}
     model = xgb.XGBClassifier(
         eval_metric='auc', 
@@ -28,7 +29,7 @@ def train():
     model.fit(x, y)
     res = model.predict(x_test)
     print(res)
-    with open("./stage_2_predict.csv", "w", newline='') as f:
+    with open("./stage_1_predict.csv", "w", newline='') as f:
         writer = csv.writer(f)
         writer.writerow(["id", "home_team_win"])
         for i in range(0, len(res)):

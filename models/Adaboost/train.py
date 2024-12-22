@@ -42,20 +42,22 @@ def record(E_in, E_val, estimator_cnt):
 
 def train():
     x, y = load_data()
+    # {'estimator__max_depth': 2, 'estimator__max_features': None, 'estimator__min_samples_leaf': 10, 'estimator__min_samples_split': 2, 'n_estimators': 100}
     ada = AdaBoostClassifier(algorithm="SAMME")
-    E_in = []
-    E_val = []
-    index = list(range(100, 2000, 200))
-    for i in index:
-        params = {
-            'n_estimators': [i]
-        }
-        grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=5, n_jobs=-1, verbose=2, scoring='accuracy')
-        grid_search.fit(x, y)
-        E_val.append(grid_search.best_score_)
-        E_in.append(grid_search.score(x, y))
+    # E_in = []
+    # E_val = []
+    # index = list(range(100, 2000, 200))
+    # for i in index:
+    #     E_in.append(grid_search.score(x, y))
+    params = {
+        'n_estimators': [100]
+    }
+    grid_search = GridSearchCV(estimator=ada, param_grid=params, cv=5, n_jobs=-1, verbose=2, scoring='accuracy')
+    grid_search.fit(x, y)
+    print(grid_search.best_score_)
+    print(grid_search.best_estimator_.score(x, y))
 
-    record(E_in, E_val, index)
+    # record(E_in, E_val, index)
     
 if __name__ == '__main__':
     train()
