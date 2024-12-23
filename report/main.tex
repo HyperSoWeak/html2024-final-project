@@ -121,7 +121,11 @@ Overall, logistic regression is one of the worst models we used in this project.
 
 \subsubsection{Discussion}
 
-The logistic regression model, while simple and interpretable, struggled with the complexity of our dataset. Its performance was significantly lower than other models, indicating that it may not be suitable for capturing the intricate patterns required for accurate predictions in this project.
+The poor performance of logistic regression can be attributed to several factors. Firstly, logistic regression is a linear model, which means it can only capture linear relationships between the features and the target variable. Given the complexity of our dataset, which likely contains non-linear relationships, logistic regression is unable to model these intricacies effectively.
+
+Additionally, logistic regression is sensitive to multicollinearity, where highly correlated features can distort the model's coefficients and lead to unreliable predictions. Despite our preprocessing efforts, some multicollinearity may still exist in the dataset, further degrading the model's performance.
+
+Logistic regression also assumes that the relationship between the features and the log-odds of the target variable is linear, which may not hold true for our dataset. This assumption can lead to biased estimates and poor generalization to unseen data, as reflected in the lower validation accuracy.
 
 \subsection{Support Vector Machine}
 
