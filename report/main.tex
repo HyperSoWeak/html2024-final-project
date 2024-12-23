@@ -375,10 +375,10 @@ After extensive Grid Search with 10-fold validation, we obtain the following acc
   \label{tab:xgb-deci-tree-acc}
 \end{table}
 
-We can see that data with absolutely no preprocessing tends to give us a better result in both stages, public and private. It is also noticeable that data with PCA misleads us with higher validation accuracy but perform poorly on out-of-sample dataset. \\
+We can see that data with no PCA preprocessing tends to give us a better result in both stages, public and private. It is also noticeable that data with PCA misleads us with higher validation accuracy but perform poorly on out-of-sample dataset. \\
 On the other hand, AutoEncoder filling doesn't make a significant impact except on Stage 2 Private, this is possible since after all, only $5\%$ of data is missing.\\
 Also, tree heights of Decision Trees differ in different kinds of boosting algorithm and datas. In AdaBoost on data with PCA, best height is around 2 and 3, but XGBoost on data with PCA, tree tends to grow to height of 9, however, XGBoost with completely raw data only needs tree with height less than 5 to achieve remarkable performance. All of them only need 50 to 100 decision trees. This can be due to the difference in boosting algorithm and variance of regularization.\\
-But overall, we achieve leaps in performance and robustness compared to AdaBoost with XGBoost on raw data. However, we can already see a bit of overfitting in Stage 2 Private.
+But overall, we achieve leaps in performance and robustness compared to AdaBoost with XGBoost on raw data. However, we can already see a bit of overfitting to Public in Stage 2.
 
 % Delete for the sake of length
 % \subsubsection{Dart}
